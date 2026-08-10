@@ -86,7 +86,10 @@
   - Реалізовано: email sign-in/signup, generic recovery response, authenticated password update, safe redirects і UI validation.
   - Supabase перевірено: Confirm email увімкнено, callback allow-list правильний, password minimum `12`, Secure password change увімкнено, rate limits активні.
   - Залишилось до Done: підключити custom SMTP і CAPTCHA provider credentials; провести end-to-end тест із реальним confirmation/recovery листом.
-- [ ] **T-207 · P1** Додати видалення account і персональних даних.
+- [x] **T-207 · P1** Додати видалення account і персональних даних.
+  - Реалізовано: self-service danger zone, точне підтвердження, повторний вхід не давніше ніж 15 хвилин і server-side RPC із `auth.uid()`.
+  - Дані видаляються каскадно разом із Supabase Auth identity; `public` та `anon` не мають права виконувати функцію.
+  - Перевірено: anonymous RPC повертає `401 permission denied`; помилкове UI-підтвердження не змінює дані. Реальне видалення тестового акаунта навмисно не виконувалося.
 
 ## M3 — Платформа для багатьох курсів
 
@@ -121,8 +124,8 @@
 ## Рекомендований порядок наступних робіт
 
 1. T-206 — підключити custom SMTP і CAPTCHA, потім перевірити confirmation/recovery email end-to-end.
-2. T-207 — додати видалення account і персональних даних.
-3. T-301 — винести lesson metadata та content contract у data-driven modules.
+2. T-301 — винести lesson metadata та content contract у data-driven modules.
+3. T-302 — розділити legacy runtime на simulator core, validators, renderers та persistence adapters.
 
 ## Як оновлювати tracker
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { ProfileForm } from "@/app/profile/profile-form";
+import { DeleteAccountForm } from "@/app/profile/delete-account-form";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = { title: "Профіль" };
@@ -60,9 +61,16 @@ export default async function ProfilePage() {
             <div><dt>Провайдер</dt><dd>{providerLabels[provider] ?? provider}</dd></div>
             <div><dt>Синхронізація</dt><dd>Supabase увімкнено</dd></div>
           </dl>
-          <p>Зміна email і видалення облікового запису будуть додані окремим безпечним процесом із повторною авторизацією.</p>
+          <p>Критичні зміни потребують повторної авторизації та перевіряються на сервері.</p>
         </aside>
       </div>
+
+      <section className="delete-account-panel" aria-labelledby="deleteAccountHeading">
+        <span>DANGER ZONE</span>
+        <h2 id="deleteAccountHeading">Видалення акаунта</h2>
+        <p>Ця дія видаляє identity у Supabase Auth і всі пов’язані навчальні дані через database cascade.</p>
+        <DeleteAccountForm />
+      </section>
     </main>
   );
 }

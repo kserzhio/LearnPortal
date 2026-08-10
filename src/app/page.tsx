@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { courses } from "@/content/courses";
 
-export default function HomePage() {
+export default async function HomePage({ searchParams }: { searchParams: Promise<{ account?: string }> }) {
+  const { account } = await searchParams;
   const publishedCourse = courses.find((course) => course.status === "published");
 
   return (
     <main>
+      {account === "deleted" ? <div className="account-deleted-notice" role="status">Акаунт і пов’язані навчальні дані видалено.</div> : null}
       <section className="portal-hero">
         <div className="eyebrow"><span>NEW</span> SYSTEM DESIGN LEARNING PLATFORM</div>
         <h1>Вивчай архітектуру.<br /><em>Перевіряй рішення симуляцією.</em></h1>
