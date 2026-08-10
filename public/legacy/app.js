@@ -33,30 +33,78 @@ const courseModules = [
 ];
 
 const courseNavigation = document.querySelector('#courseNavigation');
-courseModules.forEach(module => {
-  const section = document.createElement('section');
-  section.className = 'nav-module';
-  section.innerHTML = `<div class="nav-heading"><span>Модуль ${module.number}</span><small>${module.lessons[0].number}–${module.lessons.at(-1).number}</small></div><p class="module-name">${module.title}</p><ol class="lesson-list"></ol>`;
-  const list = section.querySelector('.lesson-list');
-  module.lessons.forEach(lesson => {
-    const item = document.createElement('li');
-    item.innerHTML = `<button class="${lesson.number === 1 ? 'active' : ''}" data-lesson="${lesson.number}" type="button" title="${lesson.title}"><span>${String(lesson.number).padStart(2, '0')}</span><b>${lesson.title}</b></button>`;
-    item.querySelector('button').addEventListener('click', () => showLesson(lesson.number));
-    list.append(item);
-  });
-  courseNavigation.append(section);
-});
+let accessibleLessonCount = 1;
 
-function showLesson(number, shouldScroll = true) {
-  document.querySelectorAll('.lesson-view').forEach((view, index) => view.hidden = index + 1 !== number);
-  const module = courseModules.find(item => item.lessons.some(lesson => lesson.number === number));
+function renderCourseNavigation() {
+  courseNavigation.replaceChildren();
+  courseModules.forEach(module => {
+    const accessibleLessons = module.lessons.filter(lesson => lesson.number <= accessibleLessonCount);
+    if (!accessibleLessons.length) return;
+    const section = document.createElement('section');
+    section.className = 'nav-module';
+    section.innerHTML = `<div class="nav-heading"><span>Модуль ${module.number}</span><small>${accessibleLessons[0].number}–${accessibleLessons.at(-1).number}</small></div><p class="module-name">${module.title}</p><ol class="lesson-list"></ol>`;
+    const list = section.querySelector('.lesson-list');
+    accessibleLessons.forEach(lesson => {
+      const item = document.createElement('li');
+      item.innerHTML = `<button class="${lesson.number === 1 ? 'active' : ''}" data-lesson="${lesson.number}" type="button" title="${lesson.title}"><span>${String(lesson.number).padStart(2, '0')}</span><b>${lesson.title}</b></button>`;
+      item.querySelector('button').addEventListener('click', () => showLesson(lesson.number));
+      list.append(item);
+    });
+    courseNavigation.append(section);
+  });
+}
+
+renderCourseNavigation();
+
+function showLesson(number, shouldScroll = true, shouldTrack = true) {
+  const accessibleNumber = Math.min(Math.max(Number(number) || 1, 1), accessibleLessonCount);
+  document.querySelectorAll('.lesson-view').forEach((view, index) => view.hidden = index + 1 !== accessibleNumber);
+  const module = courseModules.find(item => item.lessons.some(lesson => lesson.number === accessibleNumber));
   document.querySelector('#breadcrumbModule').textContent = `Модуль ${module.number}`;
-  document.querySelector('#breadcrumbLesson').textContent = `Заняття ${number}`;
-  document.querySelector('footer > span').textContent = `Заняття ${String(number).padStart(2, '0')} / 19`;
-  document.querySelectorAll('[data-lesson]').forEach(button => button.classList.toggle('active', Number(button.dataset.lesson) === number));
-  history.replaceState(null, '', `#lesson-${number}`);
-  void lessonProgress.visit(number);
+  document.querySelector('#breadcrumbLesson').textContent = `Заняття ${accessibleNumber}`;
+  document.querySelector('footer > span').textContent = `Заняття ${String(accessibleNumber).padStart(2, '0')} / 19`;
+  document.querySelectorAll('[data-lesson]').forEach(button => button.classList.toggle('active', Number(button.dataset.lesson) === accessibleNumber));
+  history.replaceState(null, '', `#lesson-${accessibleNumber}`);
+  if (shouldTrack) void lessonProgress.visit(accessibleNumber);
   if (shouldScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderCourseAccessNotice(requestedLesson) {
+  document.querySelector('#courseAccessNotice')?.remove();
+  const notice = document.createElement('aside');
+  const title = document.createElement('h2');
+  const copy = document.createElement('p');
+  const signInLink = document.createElement('a');
+  notice.id = 'courseAccessNotice';
+  notice.className = 'course-access-notice';
+  title.textContent = 'Гостьовий доступ: заняття 1 із 19';
+  copy.textContent = 'Увійди через Google або GitHub, щоб відкрити повний курс, синхронізацію прогресу та збережені архітектури.';
+  signInLink.href = `/auth/sign-in?next=${encodeURIComponent(`/legacy/index.html#lesson-${requestedLesson}`)}`;
+  signInLink.textContent = 'Увійти й відкрити весь курс →';
+  notice.append(title, copy, signInLink);
+  document.querySelector('#top').prepend(notice);
+}
+
+async function initializeCourseAccess(requestedLesson) {
+  try {
+    const response = await fetch('/api/course-access', { cache: 'no-store' });
+    const access = response.ok ? await response.json() : null;
+    if (access?.authenticated === true && access.accessibleLessonCount === 19) {
+      accessibleLessonCount = 19;
+      document.body.classList.remove('course-preview');
+      document.querySelector('#courseAccessNotice')?.remove();
+      renderCourseNavigation();
+      showLesson(requestedLesson, false);
+      return;
+    }
+  } catch {
+    // A failed access check stays safely in preview mode.
+  }
+  accessibleLessonCount = 1;
+  document.body.classList.add('course-preview');
+  renderCourseNavigation();
+  renderCourseAccessNotice(requestedLesson);
+  showLesson(1, false);
 }
 
 const menuButton = document.querySelector('#menuButton');
@@ -2763,6 +2811,7 @@ function renderArchitectureLibrary() {
     const metadata = document.createElement('small');
     const actions = document.createElement('div');
     const loadButton = document.createElement('button');
+    const exportButton = document.createElement('button');
     const deleteButton = document.createElement('button');
 
     title.textContent = architecture.title;
@@ -2771,16 +2820,63 @@ function renderArchitectureLibrary() {
     loadButton.dataset.architectureAction = 'load';
     loadButton.dataset.architectureId = architecture.id;
     loadButton.textContent = 'Відкрити';
+    exportButton.type = 'button';
+    exportButton.dataset.architectureAction = 'export';
+    exportButton.dataset.architectureId = architecture.id;
+    exportButton.textContent = 'JSON';
     deleteButton.type = 'button';
     deleteButton.dataset.architectureAction = 'delete';
     deleteButton.dataset.architectureId = architecture.id;
     deleteButton.textContent = 'Видалити';
     copy.append(title, metadata);
-    actions.append(loadButton, deleteButton);
+    actions.append(loadButton, exportButton, deleteButton);
     item.append(copy, actions);
     architectureList.append(item);
   });
 }
+
+function downloadArchitecture(title, state) {
+  const exportDocument = window.SystemaArchitectureFormat.createDocument(title, state);
+  const blob = new Blob([`${JSON.stringify(exportDocument, null, 2)}\n`], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `systema-architecture-${Date.now()}.json`;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+document.querySelector('#exportCurrentArchitecture').addEventListener('click', () => {
+  const title = document.querySelector('#architectureTitle').value.trim() || 'Systema architecture';
+  try {
+    downloadArchitecture(title, getFinalDesignState());
+    setArtifactStatus('Versioned JSON підготовлено до завантаження.', 'success');
+  } catch {
+    setArtifactStatus('Не вдалося експортувати architecture state.', 'error');
+  }
+});
+
+document.querySelector('#importArchitectureFile').addEventListener('change', async event => {
+  const input = event.currentTarget;
+  const file = input.files?.[0];
+  if (!file) return;
+  if (file.size > 262144) {
+    setArtifactStatus('JSON перевищує максимальний розмір 256 KB.', 'error');
+    input.value = '';
+    return;
+  }
+  const result = window.SystemaArchitectureFormat.parse(await file.text());
+  if (!result.valid) {
+    setArtifactStatus(result.message, 'error');
+    input.value = '';
+    return;
+  }
+  applyFinalDesignState(result.architecture.state);
+  document.querySelector('#architectureTitle').value = result.architecture.title;
+  showFinalValidation(validateFinalDesign());
+  setArtifactStatus(`Імпортовано «${result.architecture.title}». Перевір і збережи схему.`, 'success');
+  input.value = '';
+});
 
 architectureService.subscribe(renderArchitectureLibrary);
 renderArchitectureLibrary();
@@ -2815,6 +2911,16 @@ architectureList.addEventListener('click', async event => {
     applyFinalDesignState(architecture.state);
     showFinalValidation(validateFinalDesign());
     setArtifactStatus(`Відкрито схему «${architecture.title}».`, 'success');
+    return;
+  }
+
+  if (button.dataset.architectureAction === 'export') {
+    try {
+      downloadArchitecture(architecture.title, architecture.state);
+      setArtifactStatus(`Експортовано «${architecture.title}».`, 'success');
+    } catch {
+      setArtifactStatus('Не вдалося експортувати збережену схему.', 'error');
+    }
     return;
   }
 
@@ -2957,4 +3063,5 @@ renderObservabilityDashboard();
 renderFinalArchitecture();
 updateCourseProgress();
 const initialLesson = Number(location.hash.match(/^#lesson-(1[0-9]|[1-9])$/)?.[1] || 1);
-showLesson(initialLesson, false);
+showLesson(1, false, false);
+initializeCourseAccess(initialLesson);

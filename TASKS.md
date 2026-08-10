@@ -9,7 +9,7 @@
 - Репозиторій: [kserzhio/LearnPortal](https://github.com/kserzhio/LearnPortal)
 - Production URL: [learn-portal-gamma.vercel.app](https://learn-portal-gamma.vercel.app)
 - Активний етап: **M2 — Повноцінний learning account**
-- Наступна задача: **T-205 — додати export/import навчальної архітектури у versioned JSON**
+- Наступна задача: **T-206 — додати безпечну email registration і recovery flow**
 
 ## Завершено
 
@@ -79,8 +79,10 @@
 - [x] **T-202 · P1** Додати course enrollment і коректний прогрес окремо для кожного курсу.
 - [x] **T-203 · P1** Додати resume from last lesson.
 - [x] **T-204 · P1** Додати історію simulator attempts і пояснення попередніх помилок.
-- [ ] 🚧 **T-205 · P1** Додати export/import навчальної архітектури у versioned JSON.
-- [ ] **T-206 · P1** Додати email registration лише після email verification, rate limiting і recovery flow.
+- [x] **T-205 · P1** Додати export/import навчальної архітектури у versioned JSON.
+- [x] **T-208 · P0** Обмежити неавторизований доступ одним preview-заняттям на серверному рівні.
+  - Done when: guest не отримує повний HTML курсу; preview містить лише заняття 1; авторизований користувач бачить усі 19 занять.
+- [ ] 🚧 **T-206 · P1** Додати email registration лише після email verification, rate limiting і recovery flow.
 - [ ] **T-207 · P1** Додати видалення account і персональних даних.
 
 ## M3 — Платформа для багатьох курсів
@@ -109,14 +111,15 @@
 
 - [ ] Legacy course тимчасово дублюється в root і `public/legacy`; видаляти root-копію лише після перевірки нового runtime.
 - [ ] Course content частково залишається у великому HTML-файлі.
+- [ ] Повний lesson HTML захищений server redirect, але simulator-конфігурації legacy runtime ще доступні як public assets; перенести lesson payloads у server/data-driven modules у межах T-301/T-302.
 - [ ] Validators і DOM rendering поки поєднані у великому `app.js`.
 - [ ] Історія simulator attempts доступна через API, але ще не має окремого UI.
 
 ## Рекомендований порядок наступних робіт
 
-1. T-205 — додати export/import навчальної архітектури у versioned JSON.
-2. T-206 — додати безпечну email registration і recovery flow.
-3. T-207 — додати видалення account і персональних даних.
+1. T-206 — додати безпечну email registration і recovery flow.
+2. T-207 — додати видалення account і персональних даних.
+3. T-301 — винести lesson metadata та content contract у data-driven modules.
 
 ## Як оновлювати tracker
 
