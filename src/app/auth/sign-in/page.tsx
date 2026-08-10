@@ -29,7 +29,7 @@ export default async function SignInPage({
       <section className="auth-card">
         <div className="auth-symbol" aria-hidden="true">SK</div>
         <span>ОСОБИСТИЙ ПРОГРЕС</span>
-        <h1>Продовжуй навчання<br />на будь-якому пристрої.</h1>
+        <h1>Продовжуй навчання <br />на будь-якому пристрої.</h1>
         <p>Увійди, щоб синхронізувати завершені заняття, simulator attempts і збережені архітектури.</p>
         {errorMessage ? <p className="auth-error" role="alert">{errorMessage}</p> : null}
         <EmailAuthForm configured={configured} mode="sign-in" nextPath={nextPath} />
