@@ -83,6 +83,9 @@
 - [x] **T-208 · P0** Обмежити неавторизований доступ одним preview-заняттям на серверному рівні.
   - Done when: guest не отримує повний HTML курсу; preview містить лише заняття 1; авторизований користувач бачить усі 19 занять.
 - [ ] 🚧 **T-206 · P1** Додати email registration лише після email verification, rate limiting і recovery flow.
+  - Реалізовано: email sign-in/signup, generic recovery response, authenticated password update, safe redirects і UI validation.
+  - Supabase перевірено: Confirm email увімкнено, callback allow-list правильний, password minimum `12`, Secure password change увімкнено, rate limits активні.
+  - Залишилось до Done: підключити custom SMTP і CAPTCHA provider credentials; провести end-to-end тест із реальним confirmation/recovery листом.
 - [ ] **T-207 · P1** Додати видалення account і персональних даних.
 
 ## M3 — Платформа для багатьох курсів
@@ -117,7 +120,7 @@
 
 ## Рекомендований порядок наступних робіт
 
-1. T-206 — додати безпечну email registration і recovery flow.
+1. T-206 — підключити custom SMTP і CAPTCHA, потім перевірити confirmation/recovery email end-to-end.
 2. T-207 — додати видалення account і персональних даних.
 3. T-301 — винести lesson metadata та content contract у data-driven modules.
 
