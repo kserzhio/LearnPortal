@@ -2767,56 +2767,47 @@ document.querySelector('#runFinalChaos').addEventListener('click', () => {
   showFinalValidation({ valid: true, code: 'chaos-experiment-survived', message: `${finalDesignConfig.chaos[document.querySelector('#finalChaosScenario').value].title}: system зберіг critical journey і виконав перевірений recovery path.`, affectedIds: [] });
 });
 
-const completeButton = document.querySelector('#completeButton');
-if (localStorage.getItem('systema-lesson-1') === 'done') markComplete();
-completeButton.addEventListener('click', () => {
-  localStorage.setItem('systema-lesson-1', 'done');
-  markComplete();
-  showToast('Заняття завершено. Чудова робота!');
+const lessonProgress = window.SystemaProgress.createProgressService({
+  courseId: 'high-load-architecture',
+  lessonCount: 19,
 });
-function markComplete() {
-  completeButton.classList.add('done');
-  completeButton.innerHTML = '<span>✓</span> Заняття завершено';
+
+function completionButton(number) {
+  return document.querySelector(number === 1 ? '#completeButton' : `#completeLesson${number}`);
+}
+
+function markLessonComplete(number) {
+  const button = completionButton(number);
+  button.classList.add('done');
+  const icon = document.createElement('span');
+  icon.textContent = '✓';
+  button.replaceChildren(icon, ' Заняття завершено');
+}
+
+function renderLessonProgress() {
+  const completedLessons = new Set(lessonProgress.completedLessonNumbers());
+  completedLessons.forEach(markLessonComplete);
   updateCourseProgress();
 }
 
-const completeLesson2 = document.querySelector('#completeLesson2');
-if (localStorage.getItem('systema-lesson-2') === 'done') markLesson2Complete();
-completeLesson2.addEventListener('click', () => {
-  localStorage.setItem('systema-lesson-2', 'done');
-  markLesson2Complete();
-  showToast('Заняття 2 завершено. Вимоги готові до використання!');
-});
-function markLesson2Complete() {
-  completeLesson2.classList.add('done');
-  completeLesson2.innerHTML = '<span>✓</span> Заняття завершено';
-  updateCourseProgress();
-}
 function setupLessonCompletion(number) {
-  const button = document.querySelector(`#completeLesson${number}`);
-  const mark = () => { button.classList.add('done'); button.innerHTML = '<span>✓</span> Заняття завершено'; updateCourseProgress(); };
-  if (localStorage.getItem(`systema-lesson-${number}`) === 'done') mark();
-  button.addEventListener('click', () => { localStorage.setItem(`systema-lesson-${number}`, 'done'); mark(); showToast(`Заняття ${number} завершено!`); });
+  completionButton(number).addEventListener('click', async () => {
+    const completion = lessonProgress.complete(number);
+    renderLessonProgress();
+    const result = await completion;
+    renderLessonProgress();
+    showToast(result.synchronized
+      ? `Заняття ${number} завершено та синхронізовано!`
+      : `Заняття ${number} збережено на цьому пристрої.`);
+  });
 }
-setupLessonCompletion(3);
-setupLessonCompletion(4);
-setupLessonCompletion(5);
-setupLessonCompletion(6);
-setupLessonCompletion(7);
-setupLessonCompletion(8);
-setupLessonCompletion(9);
-setupLessonCompletion(10);
-setupLessonCompletion(11);
-setupLessonCompletion(12);
-setupLessonCompletion(13);
-setupLessonCompletion(14);
-setupLessonCompletion(15);
-setupLessonCompletion(16);
-setupLessonCompletion(17);
-setupLessonCompletion(18);
-setupLessonCompletion(19);
+
+Array.from({ length: 19 }, (_, index) => index + 1).forEach(setupLessonCompletion);
+renderLessonProgress();
+lessonProgress.initialize().then(renderLessonProgress);
+
 function updateCourseProgress() {
-  const completed = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19].filter(number => localStorage.getItem(`systema-lesson-${number}`) === 'done').length;
+  const completed = lessonProgress.completedLessonNumbers().length;
   const percent = Math.round(completed / 19 * 100);
   document.querySelector('.progress-copy b').textContent = `${percent}%`;
   document.querySelector('.progress-track i').style.width = `${percent}%`;

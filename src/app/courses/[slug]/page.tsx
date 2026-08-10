@@ -30,7 +30,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
         <div><span>ПРО КУРС</span><h2>Навчання через архітектурні рішення</h2><p>{course.description}</p><p>Кожне заняття містить system diagram, практичне завдання, validator і failure simulation.</p></div>
         <aside>
           <h2>{course.status === "published" ? "Готовий почати?" : "Курс ще готується"}</h2>
-          <p>{course.status === "published" ? "Прогрес поки зберігається локально. Після підключення Supabase він синхронізуватиметься з профілем." : "Структура з’явиться в каталозі після першого content release."}</p>
+          <p>{course.status === "published" ? "Для гостя прогрес зберігається локально. Після входу він автоматично об’єднується з профілем у Supabase." : "Структура з’явиться в каталозі після першого content release."}</p>
           {course.legacyPath ? <Link className="primary-link" href={course.legacyPath}>Відкрити заняття 1 <span>→</span></Link> : <Link className="secondary-link" href="/courses">Повернутися до каталогу</Link>}
         </aside>
       </section>

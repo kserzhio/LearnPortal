@@ -8,8 +8,8 @@
 
 - Репозиторій: [kserzhio/LearnPortal](https://github.com/kserzhio/LearnPortal)
 - Production URL: ще не створено
-- Активний етап: **M1 — синхронізація навчальних даних**
-- Наступна задача: **T-106 — підключити legacy progress до спільного progress service**
+- Активний етап: **M1 — збереження практичних робіт**
+- Наступна задача: **T-107 — зберігати simulator attempts і saved architectures**
 
 ## Завершено
 
@@ -48,12 +48,15 @@
 - [x] **T-105 · P0 · Owner: User + Codex** Налаштувати GitHub OAuth для локальної розробки.
   - Depends on: T-101.
   - Done when: sign-in, callback, session refresh і sign-out працюють end-to-end.
-## Зараз: M1 — синхронізація навчальних даних
+## Завершено: M1 — синхронізація навчальних даних
 
-- [ ] 🚧 **T-106 · P0 · Owner: Codex** Підключити legacy progress до спільного progress service.
+- [x] **T-106 · P0 · Owner: Codex** Підключити legacy progress до спільного progress service.
   - Depends on: T-103.
   - Done when: guest progress залишається локальним; після входу прогрес синхронізується без втрати завершених занять.
-- [ ] **T-107 · P0 · Owner: Codex** Зберігати simulator attempts і saved architectures у PostgreSQL.
+
+## Зараз: M1 — збереження практичних робіт
+
+- [ ] 🚧 **T-107 · P0 · Owner: Codex** Зберігати simulator attempts і saved architectures у PostgreSQL.
   - Depends on: T-103.
   - Done when: користувач може зберегти, відкрити та видалити лише власну схему.
 - [ ] **T-108 · P0 · Owner: User + Codex** Розгорнути портал на Vercel.
@@ -103,12 +106,12 @@
 - [ ] Legacy course тимчасово дублюється в root і `public/legacy`; видаляти root-копію лише після перевірки нового runtime.
 - [ ] Course content частково залишається у великому HTML-файлі.
 - [ ] Validators і DOM rendering поки поєднані у великому `app.js`.
-- [ ] Dashboard використовує foundation data flow, але повна синхронізація legacy progress ще не підключена.
+- [ ] Simulator attempts і навчальні архітектури ще не підключені до PostgreSQL.
 - [ ] Для production ще потрібно додати Vercel URL до allowlist Supabase, Google OAuth і GitHub OAuth.
 
 ## Рекомендований порядок наступних робіт
 
-1. T-106 і T-107 — синхронізувати progress, attempts та diagrams.
+1. T-107 — синхронізувати simulator attempts та saved architectures.
 2. T-108 — створити Vercel deployment і стабільний production URL.
 3. T-110 — додати production URL до OAuth allowlists.
 4. T-109 — пройти production smoke test.
