@@ -7,7 +7,11 @@ import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = { title: "Історія спроб симулятора" };
-const attemptDateFormatter = new Intl.DateTimeFormat("uk-UA", { dateStyle: "medium", timeStyle: "short" });
+const attemptDateFormatter = new Intl.DateTimeFormat("uk-UA", {
+  dateStyle: "medium",
+  timeStyle: "short",
+  timeZone: "Europe/Kyiv",
+});
 const MAX_HISTORY_ITEMS = 50;
 
 export default async function SimulatorAttemptsPage() {
