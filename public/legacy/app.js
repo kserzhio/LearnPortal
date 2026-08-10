@@ -2581,6 +2581,21 @@ function getFinalDesignState() {
   };
 }
 
+function applyFinalDesignState(state) {
+  const knownComponents = new Set(Object.keys(finalDesignConfig.components));
+  finalDesignState.components = new Set((state.components || []).filter(id => knownComponents.has(id)));
+  const savedRules = new Map((state.rules || []).map(rule => [rule.id, rule.value]));
+  document.querySelectorAll('[data-final-rule]').forEach(select => {
+    const value = savedRules.get(select.dataset.finalRule) || '';
+    select.value = [...select.options].some(option => option.value === value) ? value : '';
+  });
+  const scenario = document.querySelector('#finalChaosScenario');
+  if ([...scenario.options].some(option => option.value === state.scenario)) scenario.value = state.scenario;
+  resetFinalChaos();
+  resetFinalValidation();
+  renderFinalArchitecture();
+}
+
 function createFinalComponentNode(componentId) {
   const component = finalDesignConfig.components[componentId];
   const button = document.createElement('button');
@@ -2723,6 +2738,96 @@ function renderFinalChaos() {
   });
 }
 
+const architectureService = window.SystemaArtifacts.createArchitectureService();
+const architectureList = document.querySelector('#architectureList');
+const artifactStatus = document.querySelector('#artifactStatus');
+
+function setArtifactStatus(message, tone = 'neutral') {
+  artifactStatus.textContent = message;
+  artifactStatus.dataset.tone = tone;
+}
+
+function renderArchitectureLibrary() {
+  const architectures = architectureService.listArchitectures();
+  architectureList.replaceChildren();
+  if (!architectures.length) {
+    setArtifactStatus('Збережених схем поки немає.');
+    return;
+  }
+
+  architectures.forEach(architecture => {
+    const item = document.createElement('li');
+    const copy = document.createElement('div');
+    const title = document.createElement('b');
+    const metadata = document.createElement('small');
+    const actions = document.createElement('div');
+    const loadButton = document.createElement('button');
+    const deleteButton = document.createElement('button');
+
+    title.textContent = architecture.title;
+    metadata.textContent = `${new Intl.DateTimeFormat('uk-UA', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(architecture.updatedAt))} · ${architecture.synchronized ? 'Supabase' : 'цей пристрій'}`;
+    loadButton.type = 'button';
+    loadButton.dataset.architectureAction = 'load';
+    loadButton.dataset.architectureId = architecture.id;
+    loadButton.textContent = 'Відкрити';
+    deleteButton.type = 'button';
+    deleteButton.dataset.architectureAction = 'delete';
+    deleteButton.dataset.architectureId = architecture.id;
+    deleteButton.textContent = 'Видалити';
+    copy.append(title, metadata);
+    actions.append(loadButton, deleteButton);
+    item.append(copy, actions);
+    architectureList.append(item);
+  });
+}
+
+architectureService.subscribe(renderArchitectureLibrary);
+renderArchitectureLibrary();
+architectureService.initialize().then(result => {
+  renderArchitectureLibrary();
+  if (result.authenticated && result.synchronized) setArtifactStatus('Схеми синхронізовано з профілем.', 'success');
+});
+
+document.querySelector('#saveFinalArchitecture').addEventListener('click', async () => {
+  const titleInput = document.querySelector('#architectureTitle');
+  const title = titleInput.value.trim();
+  if (!title) {
+    setArtifactStatus('Додай назву, щоб зберегти схему.', 'error');
+    titleInput.focus();
+    return;
+  }
+
+  const result = await architectureService.saveArchitecture(title, getFinalDesignState());
+  titleInput.value = '';
+  setArtifactStatus(result.synchronized
+    ? 'Архітектуру збережено в Supabase.'
+    : 'Архітектуру збережено на цьому пристрої.', 'success');
+});
+
+architectureList.addEventListener('click', async event => {
+  const button = event.target.closest('[data-architecture-action]');
+  if (!button) return;
+  const architecture = architectureService.listArchitectures().find(item => item.id === button.dataset.architectureId);
+  if (!architecture) return;
+
+  if (button.dataset.architectureAction === 'load') {
+    applyFinalDesignState(architecture.state);
+    showFinalValidation(validateFinalDesign());
+    setArtifactStatus(`Відкрито схему «${architecture.title}».`, 'success');
+    return;
+  }
+
+  if (button.dataset.confirmDelete !== 'true') {
+    button.dataset.confirmDelete = 'true';
+    button.textContent = 'Підтвердити видалення';
+    setArtifactStatus(`Повторно натисни кнопку, щоб видалити «${architecture.title}».`, 'error');
+    return;
+  }
+
+  const result = await architectureService.deleteArchitecture(architecture.id);
+  setArtifactStatus(result.deleted ? 'Архітектуру видалено.' : 'Не вдалося видалити архітектуру.', result.deleted ? 'success' : 'error');
+});
+
 document.querySelector('#finalComponentPalette').addEventListener('click', event => {
   const button = event.target.closest('[data-final-component]');
   if (!button) return;
@@ -2758,7 +2863,11 @@ document.querySelector('#finalDesignReset').addEventListener('click', () => {
   resetFinalValidation();
   renderFinalArchitecture();
 });
-document.querySelector('#validateFinalDesign').addEventListener('click', () => showFinalValidation(validateFinalDesign()));
+document.querySelector('#validateFinalDesign').addEventListener('click', () => {
+  const state = getFinalDesignState();
+  showFinalValidation(validateFinalDesign());
+  architectureService.recordAttempt(state);
+});
 document.querySelector('#runFinalChaos').addEventListener('click', () => {
   const validation = validateFinalDesign();
   showFinalValidation(validation);

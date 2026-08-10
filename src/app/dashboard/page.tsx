@@ -19,6 +19,14 @@ export default async function DashboardPage() {
     : { data: [], error: null };
   const progress = progressResult.data ?? [];
   const completed = progress.filter((item) => item.completed).length;
+  const architectureResult = user && supabase
+    ? await supabase.from("saved_architectures").select("id", { count: "exact", head: true }).eq("user_id", user.id)
+    : { count: 0 };
+  const savedArchitectures = architectureResult.count ?? 0;
+  const attemptsResult = user && supabase
+    ? await supabase.from("simulator_attempts").select("id", { count: "exact", head: true }).eq("user_id", user.id)
+    : { count: 0 };
+  const simulatorAttempts = attemptsResult.count ?? 0;
 
   return (
     <main className="page-shell dashboard-page">
@@ -28,8 +36,8 @@ export default async function DashboardPage() {
       </header>
       <section className="dashboard-metrics" aria-label="Показники навчання">
         <article><span>ЗАВЕРШЕНО</span><b>{completed}</b><small>занять</small></article>
-        <article><span>АКТИВНІ КУРСИ</span><b>{user ? "1" : "—"}</b><small>enrollments</small></article>
-        <article><span>ЗБЕРЕЖЕНІ СХЕМИ</span><b>0</b><small>architectures</small></article>
+        <article><span>СПРОБИ СИМУЛЯТОРА</span><b>{simulatorAttempts}</b><small>attempts</small></article>
+        <article><span>ЗБЕРЕЖЕНІ СХЕМИ</span><b>{savedArchitectures}</b><small>architectures</small></article>
         <article><span>AUTH STATUS</span><b>{user ? "SYNC" : "LOCAL"}</b><small>{configured ? "Supabase ready" : "configuration required"}</small></article>
       </section>
       <section className="dashboard-course-list">

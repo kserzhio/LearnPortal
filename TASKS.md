@@ -8,8 +8,8 @@
 
 - Репозиторій: [kserzhio/LearnPortal](https://github.com/kserzhio/LearnPortal)
 - Production URL: ще не створено
-- Активний етап: **M1 — збереження практичних робіт**
-- Наступна задача: **T-107 — зберігати simulator attempts і saved architectures**
+- Активний етап: **M1 — production deployment**
+- Наступна задача: **T-108 — розгорнути портал на Vercel**
 
 ## Завершено
 
@@ -54,12 +54,15 @@
   - Depends on: T-103.
   - Done when: guest progress залишається локальним; після входу прогрес синхронізується без втрати завершених занять.
 
-## Зараз: M1 — збереження практичних робіт
+## Завершено: M1 — збереження практичних робіт
 
-- [ ] 🚧 **T-107 · P0 · Owner: Codex** Зберігати simulator attempts і saved architectures у PostgreSQL.
+- [x] **T-107 · P0 · Owner: Codex** Зберігати simulator attempts і saved architectures у PostgreSQL.
   - Depends on: T-103.
   - Done when: користувач може зберегти, відкрити та видалити лише власну схему.
-- [ ] **T-108 · P0 · Owner: User + Codex** Розгорнути портал на Vercel.
+
+## Зараз: M1 — production deployment
+
+- [ ] 🚧 **T-108 · P0 · Owner: User + Codex** Розгорнути портал на Vercel.
   - Depends on: T-102.
   - Done when: production build доступний через HTTPS; env-змінні налаштовані окремо від Git.
 - [ ] **T-110 · P0 · Owner: Codex** Додати production URL до Supabase, Google OAuth і GitHub OAuth.
@@ -106,15 +109,14 @@
 - [ ] Legacy course тимчасово дублюється в root і `public/legacy`; видаляти root-копію лише після перевірки нового runtime.
 - [ ] Course content частково залишається у великому HTML-файлі.
 - [ ] Validators і DOM rendering поки поєднані у великому `app.js`.
-- [ ] Simulator attempts і навчальні архітектури ще не підключені до PostgreSQL.
+- [ ] Історія simulator attempts доступна через API, але ще не має окремого UI.
 - [ ] Для production ще потрібно додати Vercel URL до allowlist Supabase, Google OAuth і GitHub OAuth.
 
 ## Рекомендований порядок наступних робіт
 
-1. T-107 — синхронізувати simulator attempts та saved architectures.
-2. T-108 — створити Vercel deployment і стабільний production URL.
-3. T-110 — додати production URL до OAuth allowlists.
-4. T-109 — пройти production smoke test.
+1. T-108 — створити Vercel deployment і стабільний production URL.
+2. T-110 — додати production URL до OAuth allowlists.
+3. T-109 — пройти production smoke test.
 
 ## Як оновлювати tracker
 
