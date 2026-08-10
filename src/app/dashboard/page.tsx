@@ -14,6 +14,11 @@ export default async function DashboardPage() {
 
   if (configured && !user) redirect("/auth/sign-in");
 
+  const profileResult = user && supabase
+    ? await supabase.from("profiles").select("display_name").eq("id", user.id).maybeSingle()
+    : { data: null };
+  const displayName = profileResult.data?.display_name ?? user?.user_metadata?.full_name ?? user?.email;
+
   const progressResult = user && supabase
     ? await supabase.from("lesson_progress").select("course_id, lesson_id, completed, position, updated_at").eq("user_id", user.id)
     : { data: [], error: null };
@@ -31,7 +36,7 @@ export default async function DashboardPage() {
   return (
     <main className="page-shell dashboard-page">
       <header className="dashboard-heading">
-        <div><span>LEARNING CONTROL ROOM</span><h1>{user ? `Вітаємо, ${user.user_metadata?.full_name ?? user.email}` : "Dashboard preview"}</h1><p>{user ? "Твій прогрес синхронізується через Supabase." : "Supabase ще не підключено — показуємо безпечний локальний preview."}</p></div>
+        <div><span>LEARNING CONTROL ROOM</span><h1>{user ? `Вітаємо, ${displayName}` : "Dashboard preview"}</h1><p>{user ? "Твій прогрес синхронізується через Supabase." : "Supabase ще не підключено — показуємо безпечний локальний preview."}</p></div>
         <Link className="primary-link" href="/courses">Продовжити навчання <span>→</span></Link>
       </header>
       <section className="dashboard-metrics" aria-label="Показники навчання">

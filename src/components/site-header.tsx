@@ -14,13 +14,14 @@ export async function SiteHeader() {
       <nav aria-label="Головна навігація">
         <Link href="/courses">Курси</Link>
         {user ? <Link href="/dashboard">Мій прогрес</Link> : null}
+        {user ? <Link href="/profile">Профіль</Link> : null}
       </nav>
       <div className="auth-slot">
         {user ? (
           <>
-            <span className="user-chip" title={user.email ?? "Користувач"}>
+            <Link className="user-chip" href="/profile" aria-label="Відкрити профіль" title={user.email ?? "Користувач"}>
               {(user.email?.[0] ?? "U").toUpperCase()}
-            </span>
+            </Link>
             <form action="/auth/sign-out" method="post">
               <button className="quiet-button" type="submit">Вийти</button>
             </form>

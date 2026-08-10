@@ -7,6 +7,8 @@
 - Use `%`, `fr`, `minmax()`, `auto-fit` and `auto-fill` for fluid layout.
 - Use `clamp()` for fluid type and spacing with safe bounds.
 - Keep the root font size at the browser default (`100%`).
+- Use `1rem` as the absolute minimum for readable interface and lesson text, including labels, metadata, buttons, hints and code. Do not use viewport scaling to reduce text below `1rem`.
+- Values below `1rem` are permitted only for decorative, non-text glyphs that have no reading function and are hidden from assistive technology.
 - Do not add static `px` values. Express borders and outlines as relative units, for example `0.0625rem` and `0.125rem`.
 
 JavaScript geometry APIs return CSS pixels. Calculations may consume those values, but must derive positions from the DOM instead of adding unexplained pixel constants.

@@ -9,7 +9,7 @@
 - Репозиторій: [kserzhio/LearnPortal](https://github.com/kserzhio/LearnPortal)
 - Production URL: [learn-portal-gamma.vercel.app](https://learn-portal-gamma.vercel.app)
 - Активний етап: **M2 — Повноцінний learning account**
-- Наступна задача: **T-201 — додати профіль і налаштування користувача**
+- Наступна задача: **T-202 — додати course enrollment і прогрес окремо для кожного курсу**
 
 ## Завершено
 
@@ -31,6 +31,7 @@
 - [x] **T-014** Налаштувати ESLint, TypeScript і production build.
 - [x] **T-015** Опублікувати початковий портал у GitHub branch `main`.
 - [x] **T-016** Додати живий task tracker із milestones, priorities та `Done when`.
+- [x] **T-017** Зафіксувати мінімальний розмір читабельного тексту `1rem`, мігрувати типографіку та додати автоматичну перевірку.
 
 ## Завершено: M1 — Cloud foundation та авторизація
 
@@ -74,8 +75,8 @@
 
 ## Зараз: M2 — Повноцінний learning account
 
-- [ ] 🚧 **T-201 · P1** Додати сторінку профілю та налаштувань користувача.
-- [ ] **T-202 · P1** Додати course enrollment і коректний прогрес окремо для кожного курсу.
+- [x] **T-201 · P1** Додати сторінку профілю та налаштувань користувача.
+- [ ] 🚧 **T-202 · P1** Додати course enrollment і коректний прогрес окремо для кожного курсу.
 - [ ] **T-203 · P1** Додати resume from last lesson.
 - [ ] **T-204 · P1** Додати історію simulator attempts і пояснення попередніх помилок.
 - [ ] **T-205 · P1** Додати export/import навчальної архітектури у versioned JSON.
@@ -113,9 +114,9 @@
 
 ## Рекомендований порядок наступних робіт
 
-1. T-201 — додати сторінку профілю та налаштувань користувача.
-2. T-202 — додати course enrollment і прогрес окремо для кожного курсу.
-3. T-203 — додати resume from last lesson.
+1. T-202 — додати course enrollment і прогрес окремо для кожного курсу.
+2. T-203 — додати resume from last lesson.
+3. T-204 — додати історію simulator attempts і пояснення попередніх помилок.
 
 ## Як оновлювати tracker
 

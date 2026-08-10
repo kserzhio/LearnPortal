@@ -6,6 +6,7 @@ Non-negotiable rules:
 
 - Keep the portal accessible, responsive and framework-free until the project explicitly changes direction.
 - Do not introduce new fixed `px` values. Use `rem`, `em`, `%`, `fr`, `minmax()` and `clamp()` according to the CSS reference.
+- Keep all readable interface and lesson text at `1rem` or larger. Smaller sizes are allowed only for non-text decorative marks that are hidden from assistive technology.
 - Treat existing `px` CSS as migration debt. Convert selectors touched by a task when safe; do not rewrite unrelated styling without approval.
 - Preserve WCAG 2.2 AA contrast, keyboard operation, visible focus and semantic HTML.
 - Apply SOLID and Clean Code proportionally. Split state, rendering, validation and persistence when adding behavior.

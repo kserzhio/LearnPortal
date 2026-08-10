@@ -10,13 +10,17 @@ const authErrors: Record<string, string> = {
   configuration: "OAuth ще не повністю налаштований.",
 };
 
+function safeNextPath(value: string | undefined) {
+  return value?.startsWith("/") && !value.startsWith("//") ? value : "/dashboard";
+}
+
 export default async function SignInPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; next?: string }>;
 }) {
   const configured = isSupabaseConfigured();
-  const { error } = await searchParams;
+  const { error, next } = await searchParams;
   const errorMessage = error ? authErrors[error] ?? "Не вдалося виконати вхід." : "";
 
   return (
@@ -27,7 +31,7 @@ export default async function SignInPage({
         <h1>Продовжуй навчання<br />на будь-якому пристрої.</h1>
         <p>Увійди, щоб синхронізувати завершені заняття, simulator attempts і збережені архітектури.</p>
         {errorMessage ? <p className="auth-error" role="alert">{errorMessage}</p> : null}
-        <SignInButtons configured={configured} />
+        <SignInButtons configured={configured} nextPath={safeNextPath(next)} />
         <small>Вхід не надає Systema доступу до репозиторіїв, Google Drive чи інших приватних даних.</small>
         <Link href="/courses">Продовжити без входу →</Link>
       </section>

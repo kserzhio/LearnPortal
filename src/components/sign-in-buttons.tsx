@@ -5,7 +5,7 @@ import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 type Provider = "google" | "github";
 
-export function SignInButtons({ configured }: { configured: boolean }) {
+export function SignInButtons({ configured, nextPath }: { configured: boolean; nextPath: string }) {
   const [message, setMessage] = useState("");
   const [pendingProvider, setPendingProvider] = useState<Provider | null>(null);
 
@@ -17,7 +17,7 @@ export function SignInButtons({ configured }: { configured: boolean }) {
     const supabase = createSupabaseBrowserClient();
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
-      options: { redirectTo: `${window.location.origin}/auth/callback?next=/dashboard` },
+      options: { redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}` },
     });
 
     if (error) {
