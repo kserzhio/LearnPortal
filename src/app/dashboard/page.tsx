@@ -70,7 +70,7 @@ export default async function DashboardPage() {
       </header>
       <section className="dashboard-metrics" aria-label="Показники навчання">
         <article><span>ЗАВЕРШЕНО</span><b>{completed}</b><small>занять</small></article>
-        <article><span>СПРОБИ СИМУЛЯТОРА</span><b>{simulatorAttempts}</b><small>attempts</small></article>
+        <article><span>СПРОБИ СИМУЛЯТОРА</span><b>{simulatorAttempts}</b><small>attempts</small><Link className="metric-detail-link" href="/dashboard/attempts">Відкрити історію →</Link></article>
         <article><span>ЗБЕРЕЖЕНІ СХЕМИ</span><b>{savedArchitectures}</b><small>architectures</small></article>
         <article><span>AUTH STATUS</span><b>{user ? "SYNC" : "LOCAL"}</b><small>{configured ? "Supabase ready" : "configuration required"}</small></article>
       </section>
