@@ -1,0 +1,4 @@
+interface:
+  display_name: "Systema Development"
+  short_description: "Build the Systema portal safely"
+  default_prompt: "Use $systema-development to implement this portal change with accessible responsive UI and clean architecture."
