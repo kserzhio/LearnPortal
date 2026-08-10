@@ -9,7 +9,7 @@
 - Репозиторій: [kserzhio/LearnPortal](https://github.com/kserzhio/LearnPortal)
 - Production URL: [learn-portal-gamma.vercel.app](https://learn-portal-gamma.vercel.app)
 - Активний етап: **M2 — Повноцінний learning account**
-- Наступна задача: **T-202 — додати course enrollment і прогрес окремо для кожного курсу**
+- Наступна задача: **T-203 — додати resume from last lesson**
 
 ## Завершено
 
@@ -76,8 +76,8 @@
 ## Зараз: M2 — Повноцінний learning account
 
 - [x] **T-201 · P1** Додати сторінку профілю та налаштувань користувача.
-- [ ] 🚧 **T-202 · P1** Додати course enrollment і коректний прогрес окремо для кожного курсу.
-- [ ] **T-203 · P1** Додати resume from last lesson.
+- [x] **T-202 · P1** Додати course enrollment і коректний прогрес окремо для кожного курсу.
+- [ ] 🚧 **T-203 · P1** Додати resume from last lesson.
 - [ ] **T-204 · P1** Додати історію simulator attempts і пояснення попередніх помилок.
 - [ ] **T-205 · P1** Додати export/import навчальної архітектури у versioned JSON.
 - [ ] **T-206 · P1** Додати email registration лише після email verification, rate limiting і recovery flow.
@@ -114,9 +114,9 @@
 
 ## Рекомендований порядок наступних робіт
 
-1. T-202 — додати course enrollment і прогрес окремо для кожного курсу.
-2. T-203 — додати resume from last lesson.
-3. T-204 — додати історію simulator attempts і пояснення попередніх помилок.
+1. T-203 — додати resume from last lesson.
+2. T-204 — додати історію simulator attempts і пояснення попередніх помилок.
+3. T-205 — додати export/import навчальної архітектури у versioned JSON.
 
 ## Як оновлювати tracker
 

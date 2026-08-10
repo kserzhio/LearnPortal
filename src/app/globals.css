@@ -44,6 +44,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible { 
 .course-detail-hero > div > p { color:#bcb6ff; }
 .course-detail-hero > div { min-width:0; }
 .course-detail-hero h1 { overflow-wrap:anywhere; }
+.enrollment-form { margin-top:1rem; }.enrollment-form button,.enrollment-link { display:inline-flex; width:100%; min-height:3rem; padding:.75rem 1rem; align-items:center; justify-content:center; color:var(--ink); border:.0625rem solid var(--lime); background:var(--lime); font-size:1rem; font-weight:800; text-decoration:none; cursor:pointer; }.enrollment-status,.enrollment-message { margin-top:1rem; padding:1rem; color:#d9f8e8!important; border-left:.1875rem solid #9bd7b9; background:#174a37; }.enrollment-message.error { color:#ffd8df!important; border-color:#ff8094; background:#3c2630; }.dashboard-empty { padding:2rem; border:.0625rem solid var(--line); background:var(--surface); }.dashboard-empty h3,.dashboard-empty p { margin:0; }.dashboard-empty p { margin-top:.75rem; color:var(--muted); line-height:1.7; }.dashboard-empty .primary-link { width:max-content; margin-top:1.5rem; }
 .sign-in-actions button:disabled { color:#414254; }
 .auth-error { padding:.75rem; color:#fff; border:.0625rem solid #ff8da1; background:#5b1f2c; font-size:1rem; }
 
