@@ -9,7 +9,7 @@
 - Репозиторій: [kserzhio/LearnPortal](https://github.com/kserzhio/LearnPortal)
 - Production URL: [learn-portal-gamma.vercel.app](https://learn-portal-gamma.vercel.app)
 - Активний етап: **M2 — Повноцінний learning account**
-- Наступна задача: **T-203 — додати resume from last lesson**
+- Наступна задача: **T-204 — додати історію simulator attempts і пояснення попередніх помилок**
 
 ## Завершено
 
@@ -21,7 +21,7 @@
 - [x] **T-004** Створити Next.js App Router оболонку порталу.
 - [x] **T-005** Додати landing page, каталог курсів і сторінки курсів.
 - [x] **T-006** Зберегти чинний курс як legacy runtime без втрати функціональності.
-- [x] **T-007** Підключити локальні Open Sans Variable і Space Mono.
+- [x] **T-007** Підключити локальні Manrope Variable і JetBrains Mono Variable з підтримкою української кирилиці.
 - [x] **T-008** Додати responsive layout без нових `px`-значень.
 - [x] **T-009** Перевірити новий UI на WCAG AA та ширині `20rem`.
 - [x] **T-010** Додати Supabase-ready server/browser clients і auth routes.
@@ -77,8 +77,8 @@
 
 - [x] **T-201 · P1** Додати сторінку профілю та налаштувань користувача.
 - [x] **T-202 · P1** Додати course enrollment і коректний прогрес окремо для кожного курсу.
-- [ ] 🚧 **T-203 · P1** Додати resume from last lesson.
-- [ ] **T-204 · P1** Додати історію simulator attempts і пояснення попередніх помилок.
+- [x] **T-203 · P1** Додати resume from last lesson.
+- [ ] 🚧 **T-204 · P1** Додати історію simulator attempts і пояснення попередніх помилок.
 - [ ] **T-205 · P1** Додати export/import навчальної архітектури у versioned JSON.
 - [ ] **T-206 · P1** Додати email registration лише після email verification, rate limiting і recovery flow.
 - [ ] **T-207 · P1** Додати видалення account і персональних даних.
@@ -114,9 +114,9 @@
 
 ## Рекомендований порядок наступних робіт
 
-1. T-203 — додати resume from last lesson.
-2. T-204 — додати історію simulator attempts і пояснення попередніх помилок.
-3. T-205 — додати export/import навчальної архітектури у versioned JSON.
+1. T-204 — додати історію simulator attempts і пояснення попередніх помилок.
+2. T-205 — додати export/import навчальної архітектури у versioned JSON.
+3. T-206 — додати безпечну email registration і recovery flow.
 
 ## Як оновлювати tracker
 

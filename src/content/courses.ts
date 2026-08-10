@@ -51,3 +51,10 @@ export const courses: CourseSummary[] = [
 export function getCourseBySlug(slug: string) {
   return courses.find((course) => course.slug === slug);
 }
+
+export function getCourseLessonPath(course: CourseSummary, lessonPosition: number) {
+  if (!course.legacyPath) return `/courses/${course.slug}`;
+  const [pathname] = course.legacyPath.split("#");
+  const safePosition = Math.min(Math.max(Math.trunc(lessonPosition), 1), course.lessonCount || 1);
+  return `${pathname}#lesson-${safePosition}`;
+}

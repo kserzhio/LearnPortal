@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/site-header";
-import "@fontsource-variable/open-sans/wght.css";
-import "@fontsource/space-mono/latin-400.css";
-import "@fontsource/space-mono/latin-700.css";
+import "@fontsource-variable/manrope/wght.css";
+import "@fontsource-variable/jetbrains-mono/wght.css";
 import "./globals.css";
 
 export const metadata: Metadata = {

@@ -55,6 +55,7 @@ function showLesson(number, shouldScroll = true) {
   document.querySelector('footer > span').textContent = `Заняття ${String(number).padStart(2, '0')} / 19`;
   document.querySelectorAll('[data-lesson]').forEach(button => button.classList.toggle('active', Number(button.dataset.lesson) === number));
   history.replaceState(null, '', `#lesson-${number}`);
+  void lessonProgress.visit(number);
   if (shouldScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 

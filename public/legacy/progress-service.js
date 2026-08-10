@@ -91,8 +91,7 @@
 
           records = mergeRecords(records, Array.isArray(payload.records) ? payload.records : []);
           persistLocal();
-          const completedRecords = records.filter(record => record.completed);
-          if (completedRecords.length > 0) await synchronize(completedRecords);
+          if (records.length > 0) await synchronize(records);
           return { authenticated: true, synchronized: true };
         } catch {
           return { authenticated, synchronized: false };
@@ -122,6 +121,30 @@
       }
     }
 
+    async function visit(number) {
+      await initialize();
+      const id = lessonId(number);
+      const current = records.find(record => record.lessonId === id);
+      const record = {
+        courseId,
+        lessonId: id,
+        completed: Boolean(current?.completed),
+        position: Number(current?.position) || 0,
+        updatedAt: new Date().toISOString(),
+      };
+      records = mergeRecords(records, [record]);
+      persistLocal();
+      if (!authenticated) return { synchronized: false };
+      try {
+        const mergedRecord = records.find(item => item.lessonId === id);
+        if (!mergedRecord) return { synchronized: false };
+        await synchronize([mergedRecord]);
+        return { synchronized: true };
+      } catch {
+        return { synchronized: false };
+      }
+    }
+
     function completedLessonNumbers() {
       return records
         .filter(record => record.completed)
@@ -129,7 +152,7 @@
         .filter(number => Number.isInteger(number) && number >= 1 && number <= lessonCount);
     }
 
-    return { initialize, complete, completedLessonNumbers };
+    return { initialize, complete, visit, completedLessonNumbers };
   }
 
   window.SystemaProgress = { createProgressService };

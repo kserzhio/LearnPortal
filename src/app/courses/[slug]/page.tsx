@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { enrollInCourse } from "@/app/courses/[slug]/actions";
-import { getCourseBySlug } from "@/content/courses";
+import { getCourseBySlug, getCourseLessonPath } from "@/content/courses";
+import { getCourseResume, getResumeLabel } from "@/lib/progress/resume";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 type CoursePageProps = {
@@ -24,14 +25,20 @@ export default async function CoursePage({ params, searchParams }: CoursePagePro
 
   const supabase = await createSupabaseServerClient();
   const user = supabase ? (await supabase.auth.getUser()).data.user : null;
-  const [enrollmentQuery, progressQuery] = user && supabase && course.status === "published"
+  const [enrollmentQuery, progressQuery, lessonsQuery] = user && supabase && course.status === "published"
     ? await Promise.all([
       supabase.from("course_enrollments").select("course_id").eq("user_id", user.id).eq("course_id", course.id).maybeSingle(),
-      supabase.from("lesson_progress").select("id", { count: "exact", head: true }).eq("user_id", user.id).eq("course_id", course.id).eq("completed", true),
+      supabase.from("lesson_progress").select("lesson_id, completed, updated_at").eq("user_id", user.id).eq("course_id", course.id),
+      supabase.from("lessons").select("id, position, title").eq("course_id", course.id).eq("status", "published"),
     ])
-    : [{ data: null }, { count: 0 }];
+    : [{ data: null }, { data: [] }, { data: [] }];
   const isEnrolled = Boolean(enrollmentQuery.data);
-  const completedLessons = progressQuery.count ?? 0;
+  const courseProgress = progressQuery.data ?? [];
+  const completedLessons = courseProgress.filter((item) => item.completed).length;
+  const resume = getCourseResume(
+    (lessonsQuery.data ?? []).map((lesson) => ({ id: lesson.id, position: lesson.position, title: lesson.title })),
+    courseProgress.map((item) => ({ lessonId: item.lesson_id, completed: item.completed, updatedAt: item.updated_at })),
+  );
   const enrollAction = enrollInCourse.bind(null, course.id, course.slug);
 
   return (
@@ -61,7 +68,11 @@ export default async function CoursePage({ params, searchParams }: CoursePagePro
           {!user && course.status === "published" ? <Link className="enrollment-link" href={`/auth/sign-in?next=${encodeURIComponent(`/courses/${course.slug}`)}`}>Увійти, щоб синхронізувати прогрес</Link> : null}
           {enrollmentResult === "success" ? <p className="enrollment-message" role="status">Курс додано до твого кабінету.</p> : null}
           {enrollmentResult === "failed" ? <p className="enrollment-message error" role="alert">Не вдалося додати курс. Спробуй ще раз.</p> : null}
-          {course.legacyPath ? <Link className="primary-link" href={course.legacyPath}>Відкрити заняття 1 <span>→</span></Link> : <Link className="secondary-link" href="/courses">Повернутися до каталогу</Link>}
+          {course.legacyPath ? (
+            <Link className="primary-link" href={resume ? getCourseLessonPath(course, resume.lesson.position) : course.legacyPath}>
+              {resume ? getResumeLabel(resume) : "Відкрити заняття 1"} <span>→</span>
+            </Link>
+          ) : <Link className="secondary-link" href="/courses">Повернутися до каталогу</Link>}
         </aside>
       </section>
     </main>
