@@ -7,9 +7,9 @@
 ## Поточний стан
 
 - Репозиторій: [kserzhio/LearnPortal](https://github.com/kserzhio/LearnPortal)
-- Production URL: ще не створено
-- Активний етап: **M1 — production deployment**
-- Наступна задача: **T-108 — розгорнути портал на Vercel**
+- Production URL: [learn-portal-gamma.vercel.app](https://learn-portal-gamma.vercel.app)
+- Активний етап: **M2 — Повноцінний learning account**
+- Наступна задача: **T-201 — додати профіль і налаштування користувача**
 
 ## Завершено
 
@@ -60,21 +60,21 @@
   - Depends on: T-103.
   - Done when: користувач може зберегти, відкрити та видалити лише власну схему.
 
-## Зараз: M1 — production deployment
+## Завершено: M1 — production deployment
 
-- [ ] 🚧 **T-108 · P0 · Owner: User + Codex** Розгорнути портал на Vercel.
+- [x] **T-108 · P0 · Owner: User + Codex** Розгорнути портал на Vercel.
   - Depends on: T-102.
   - Done when: production build доступний через HTTPS; env-змінні налаштовані окремо від Git.
-- [ ] **T-110 · P0 · Owner: Codex** Додати production URL до Supabase, Google OAuth і GitHub OAuth.
+- [x] **T-110 · P0 · Owner: Codex** Додати production URL до Supabase, Google OAuth і GitHub OAuth.
   - Depends on: T-108.
   - Done when: production callback URLs налаштовані без зміни локального OAuth flow.
-- [ ] **T-109 · P0 · Owner: Codex** Провести production smoke test.
+- [x] **T-109 · P0 · Owner: Codex** Провести production smoke test.
   - Depends on: T-104, T-105, T-108.
   - Done when: landing, catalog, lesson navigation, обидва OAuth providers, progress sync і sign-out проходять перевірку без console errors.
 
-## Далі: M2 — Повноцінний learning account
+## Зараз: M2 — Повноцінний learning account
 
-- [ ] **T-201 · P1** Додати сторінку профілю та налаштувань користувача.
+- [ ] 🚧 **T-201 · P1** Додати сторінку профілю та налаштувань користувача.
 - [ ] **T-202 · P1** Додати course enrollment і коректний прогрес окремо для кожного курсу.
 - [ ] **T-203 · P1** Додати resume from last lesson.
 - [ ] **T-204 · P1** Додати історію simulator attempts і пояснення попередніх помилок.
@@ -110,13 +110,12 @@
 - [ ] Course content частково залишається у великому HTML-файлі.
 - [ ] Validators і DOM rendering поки поєднані у великому `app.js`.
 - [ ] Історія simulator attempts доступна через API, але ще не має окремого UI.
-- [ ] Для production ще потрібно додати Vercel URL до allowlist Supabase, Google OAuth і GitHub OAuth.
 
 ## Рекомендований порядок наступних робіт
 
-1. T-108 — створити Vercel deployment і стабільний production URL.
-2. T-110 — додати production URL до OAuth allowlists.
-3. T-109 — пройти production smoke test.
+1. T-201 — додати сторінку профілю та налаштувань користувача.
+2. T-202 — додати course enrollment і прогрес окремо для кожного курсу.
+3. T-203 — додати resume from last lesson.
 
 ## Як оновлювати tracker
 
