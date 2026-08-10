@@ -16,7 +16,14 @@ export async function GET(request: Request) {
   }
 
   const { error } = await supabase.auth.exchangeCodeForSession(code);
-  if (error) return NextResponse.redirect(new URL("/auth/sign-in?error=callback", url.origin));
+  if (error) {
+    console.error("Supabase OAuth callback failed", {
+      code: error.code,
+      message: error.message,
+      status: error.status,
+    });
+    return NextResponse.redirect(new URL("/auth/sign-in?error=callback", url.origin));
+  }
 
   return NextResponse.redirect(new URL(next, url.origin));
 }

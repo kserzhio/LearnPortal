@@ -8,8 +8,8 @@
 
 - Репозиторій: [kserzhio/LearnPortal](https://github.com/kserzhio/LearnPortal)
 - Production URL: ще не створено
-- Активний етап: **M1 — Cloud foundation та авторизація**
-- Наступна задача: **T-101 — створити Supabase project**
+- Активний етап: **M1 — синхронізація навчальних даних**
+- Наступна задача: **T-106 — підключити legacy progress до спільного progress service**
 
 ## Завершено
 
@@ -32,23 +32,25 @@
 - [x] **T-015** Опублікувати початковий портал у GitHub branch `main`.
 - [x] **T-016** Додати живий task tracker із milestones, priorities та `Done when`.
 
-## Зараз: M1 — Cloud foundation та авторизація
+## Завершено: M1 — Cloud foundation та авторизація
 
-- [ ] **T-101 · P0 · Owner: User** Створити online Supabase project.
+- [x] **T-101 · P0 · Owner: User** Створити online Supabase project.
   - Done when: отримані Project URL і publishable key; secrets не додані в Git.
-- [ ] **T-102 · P0 · Owner: User + Codex** Створити `.env.local` і підключити локальний портал до Supabase.
+- [x] **T-102 · P0 · Owner: User + Codex** Створити `.env.local` і підключити локальний портал до Supabase.
   - Depends on: T-101.
   - Done when: setup mode вимкнений, клієнт і server routes бачать Supabase.
-- [ ] **T-103 · P0 · Owner: Codex** Виконати SQL migration та перевірити таблиці, indexes і RLS.
+- [x] **T-103 · P0 · Owner: Codex** Виконати SQL migration та перевірити таблиці, indexes і RLS.
   - Depends on: T-101.
   - Done when: migration застосована; anonymous user не читає приватні rows; authenticated user бачить лише власні rows.
-- [ ] **T-104 · P0 · Owner: User + Codex** Налаштувати Google OAuth.
-  - Depends on: T-101, production або preview callback URL.
+- [x] **T-104 · P0 · Owner: User + Codex** Налаштувати Google OAuth для локальної розробки.
+  - Depends on: T-101.
   - Done when: sign-in, callback, session refresh і sign-out працюють end-to-end.
-- [ ] **T-105 · P0 · Owner: User + Codex** Налаштувати GitHub OAuth.
-  - Depends on: T-101, production або preview callback URL.
+- [x] **T-105 · P0 · Owner: User + Codex** Налаштувати GitHub OAuth для локальної розробки.
+  - Depends on: T-101.
   - Done when: sign-in, callback, session refresh і sign-out працюють end-to-end.
-- [ ] **T-106 · P0 · Owner: Codex** Підключити legacy progress до спільного progress service.
+## Зараз: M1 — синхронізація навчальних даних
+
+- [ ] 🚧 **T-106 · P0 · Owner: Codex** Підключити legacy progress до спільного progress service.
   - Depends on: T-103.
   - Done when: guest progress залишається локальним; після входу прогрес синхронізується без втрати завершених занять.
 - [ ] **T-107 · P0 · Owner: Codex** Зберігати simulator attempts і saved architectures у PostgreSQL.
@@ -57,6 +59,9 @@
 - [ ] **T-108 · P0 · Owner: User + Codex** Розгорнути портал на Vercel.
   - Depends on: T-102.
   - Done when: production build доступний через HTTPS; env-змінні налаштовані окремо від Git.
+- [ ] **T-110 · P0 · Owner: Codex** Додати production URL до Supabase, Google OAuth і GitHub OAuth.
+  - Depends on: T-108.
+  - Done when: production callback URLs налаштовані без зміни локального OAuth flow.
 - [ ] **T-109 · P0 · Owner: Codex** Провести production smoke test.
   - Depends on: T-104, T-105, T-108.
   - Done when: landing, catalog, lesson navigation, обидва OAuth providers, progress sync і sign-out проходять перевірку без console errors.
@@ -99,16 +104,14 @@
 - [ ] Course content частково залишається у великому HTML-файлі.
 - [ ] Validators і DOM rendering поки поєднані у великому `app.js`.
 - [ ] Dashboard використовує foundation data flow, але повна синхронізація legacy progress ще не підключена.
-- [ ] Google/GitHub кнопки навмисно disabled, доки не задано Supabase env.
+- [ ] Для production ще потрібно додати Vercel URL до allowlist Supabase, Google OAuth і GitHub OAuth.
 
 ## Рекомендований порядок наступних робіт
 
-1. T-101 — створити Supabase project.
-2. T-102 і T-103 — підключити env та застосувати migration.
-3. T-108 — створити Vercel deployment і стабільний callback URL.
-4. T-104 і T-105 — активувати Google та GitHub OAuth.
-5. T-106 і T-107 — синхронізувати progress, attempts та diagrams.
-6. T-109 — пройти production smoke test.
+1. T-106 і T-107 — синхронізувати progress, attempts та diagrams.
+2. T-108 — створити Vercel deployment і стабільний production URL.
+3. T-110 — додати production URL до OAuth allowlists.
+4. T-109 — пройти production smoke test.
 
 ## Як оновлювати tracker
 

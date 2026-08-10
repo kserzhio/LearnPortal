@@ -44,6 +44,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible { 
 .course-detail-hero > div { min-width:0; }
 .course-detail-hero h1 { overflow-wrap:anywhere; }
 .sign-in-actions button:disabled { color:#414254; }
+.auth-error { padding:.75rem; color:#fff; border:.0625rem solid #ff8da1; background:#5b1f2c; font-size:.7rem; }
 
 @media (max-width:60em) { .compact-course-grid,.course-grid { grid-template-columns:1fr 1fr; }.hero-stat { display:none; }.final-placeholder { display:none; } }
 @media (max-width:45em) { .site-header { grid-template-columns:auto auto; justify-content:space-between; }.site-header nav { grid-column:1/-1; grid-row:2; justify-content:flex-start; order:3; }.value-grid,.compact-course-grid,.course-grid { grid-template-columns:1fr; }.value-grid article { min-height:0; border-right:0; border-bottom:.0625rem solid var(--line); }.course-detail-hero,.course-detail-body { grid-template-columns:1fr; }.dashboard-heading { align-items:stretch; flex-direction:column; }.dashboard-metrics { grid-template-columns:1fr 1fr; }.dashboard-metrics article:nth-child(2) { border-right:0; }.dashboard-metrics article:nth-child(-n+2) { border-bottom:.0625rem solid var(--line); } }
