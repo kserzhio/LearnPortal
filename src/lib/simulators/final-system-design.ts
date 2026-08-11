@@ -1,5 +1,11 @@
-export const FINAL_DESIGN_COURSE_ID = "high-load-architecture";
-export const FINAL_DESIGN_LESSON_ID = "high-load-19";
+import { getLessons } from "@/content/course-contract";
+import { highLoadArchitectureCourse } from "@/content/courses/high-load-architecture";
+
+const finalDesignLesson = getLessons(highLoadArchitectureCourse).at(-1);
+if (!finalDesignLesson) throw new Error("The final System Design lesson is missing");
+
+export const FINAL_DESIGN_COURSE_ID = highLoadArchitectureCourse.id;
+export const FINAL_DESIGN_LESSON_ID = finalDesignLesson.id;
 export const FINAL_DESIGN_SIMULATOR_ID = "final-system-design";
 export const FINAL_DESIGN_SCHEMA_VERSION = 1;
 

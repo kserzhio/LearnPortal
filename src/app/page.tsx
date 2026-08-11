@@ -16,7 +16,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           {publishedCourse ? <Link className="primary-link" href={`/courses/${publishedCourse.slug}`}>Почати навчання <span>→</span></Link> : null}
           <Link className="secondary-link" href="/courses">Переглянути курси</Link>
         </div>
-        <div className="hero-stat hero-stat-one"><b>19</b><span>interactive lessons</span></div>
+        <div className="hero-stat hero-stat-one"><b>{publishedCourse?.lessonCount ?? 0}</b><span>interactive lessons</span></div>
         <div className="hero-stat hero-stat-two"><b>AA</b><span>WCAG contrast</span></div>
       </section>
 

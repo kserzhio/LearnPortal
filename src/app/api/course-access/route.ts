@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
+import { getCourseLessons } from "@/content/courses";
+import { highLoadArchitectureCourse } from "@/content/courses/high-load-architecture";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const PREVIEW_LESSON_COUNT = 1;
-const FULL_LESSON_COUNT = 19;
+const FULL_LESSON_COUNT = getCourseLessons(highLoadArchitectureCourse.id).length;
 
 export async function GET() {
   const supabase = await createSupabaseServerClient();

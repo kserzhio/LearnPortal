@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { courses, getCourseLessonPath } from "@/content/courses";
+import { courses, getCourseLessonPath, getCourseLessons } from "@/content/courses";
 import { getAttemptFeedback, getSimulatorTitle } from "@/lib/simulators/attempt-feedback";
+import { FINAL_DESIGN_COURSE_ID, FINAL_DESIGN_LESSON_ID } from "@/lib/simulators/final-system-design";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -13,6 +14,11 @@ const attemptDateFormatter = new Intl.DateTimeFormat("uk-UA", {
   timeZone: "Europe/Kyiv",
 });
 const MAX_HISTORY_ITEMS = 50;
+const finalDesignCourse = courses.find((course) => course.id === FINAL_DESIGN_COURSE_ID);
+const finalDesignLesson = getCourseLessons(FINAL_DESIGN_COURSE_ID).find((lesson) => lesson.id === FINAL_DESIGN_LESSON_ID);
+const finalDesignHref = finalDesignCourse && finalDesignLesson
+  ? getCourseLessonPath(finalDesignCourse, finalDesignLesson.position)
+  : "/courses";
 
 export default async function SimulatorAttemptsPage() {
   const configured = isSupabaseConfigured();
@@ -21,22 +27,19 @@ export default async function SimulatorAttemptsPage() {
 
   if (configured && !user) redirect("/auth/sign-in?next=%2Fdashboard%2Fattempts");
 
-  const [attemptsResult, lessonsResult] = user && supabase
-    ? await Promise.all([
-      supabase
-        .from("simulator_attempts")
-        .select("id, course_id, lesson_id, simulator_id, validation_code, score, created_at")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false })
-        .limit(MAX_HISTORY_ITEMS),
-      supabase.from("lessons").select("id, position, title").eq("status", "published"),
-    ])
-    : [{ data: [], error: null }, { data: [], error: null }];
+  const attemptsResult = user && supabase
+    ? await supabase
+      .from("simulator_attempts")
+      .select("id, course_id, lesson_id, simulator_id, validation_code, score, created_at")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(MAX_HISTORY_ITEMS)
+    : { data: [], error: null };
 
   const attempts = attemptsResult.data ?? [];
-  const lessonsById = new Map((lessonsResult.data ?? []).map((lesson) => [lesson.id, lesson]));
+  const lessonsById = new Map(courses.flatMap((course) => getCourseLessons(course.id)).map((lesson) => [lesson.id, lesson]));
   const coursesById = new Map(courses.map((course) => [course.id, course]));
-  const hasLoadError = Boolean(attemptsResult.error || lessonsResult.error);
+  const hasLoadError = Boolean(attemptsResult.error);
 
   return (
     <main className="page-shell attempt-history-page">
@@ -56,7 +59,7 @@ export default async function SimulatorAttemptsPage() {
           <span>0 СПРОБ</span>
           <h2>Історія з’явиться після першої перевірки</h2>
           <p>Відкрий фінальне заняття, побудуй архітектуру та запусти validation.</p>
-          <Link className="primary-link" href="/legacy/index.html#lesson-19">Відкрити фінальний симулятор <span>→</span></Link>
+          <Link className="primary-link" href={finalDesignHref}>Відкрити фінальний симулятор <span>→</span></Link>
         </section>
       ) : null}
 

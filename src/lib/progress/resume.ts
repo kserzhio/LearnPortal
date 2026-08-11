@@ -16,7 +16,7 @@ export type CourseResume = {
   lastActivityAt: string | null;
 };
 
-export function getCourseResume(lessons: ResumeLesson[], progress: ResumeProgress[]): CourseResume | null {
+export function getCourseResume(lessons: readonly ResumeLesson[], progress: readonly ResumeProgress[]): CourseResume | null {
   const orderedLessons = lessons.toSorted((first, second) => first.position - second.position);
   const firstLesson = orderedLessons[0];
   if (!firstLesson) return null;

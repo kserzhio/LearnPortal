@@ -8,8 +8,8 @@
 
 - Репозиторій: [kserzhio/LearnPortal](https://github.com/kserzhio/LearnPortal)
 - Production URL: [learn-portal-gamma.vercel.app](https://learn-portal-gamma.vercel.app)
-- Активний етап: **M2 — Повноцінний learning account**
-- Наступна задача: **T-206 — додати безпечну email registration і recovery flow**
+- Активний етап: **M3 — Платформа для багатьох курсів**
+- Наступна задача: **T-302 — розділити legacy runtime на окремі модулі**
 
 ## Завершено
 
@@ -91,9 +91,12 @@
   - Дані видаляються каскадно разом із Supabase Auth identity; `public` та `anon` не мають права виконувати функцію.
   - Перевірено: anonymous RPC повертає `401 permission denied`; помилкове UI-підтвердження не змінює дані. Реальне видалення тестового акаунта навмисно не виконувалося.
 
-## M3 — Платформа для багатьох курсів
+## Зараз: M3 — Платформа для багатьох курсів
 
-- [ ] **T-301 · P1** Винести lesson metadata та content contract у data-driven modules.
+- [x] **T-301 · P1** Винести lesson metadata та content contract у data-driven modules.
+  - Реалізовано: типізований course contract, 6 modules і 19 lessons зі stable IDs, topics, practice, validation expectations та outcomes.
+  - Next.js preview, dashboard resume, simulator history і access count використовують catalog source без додаткових metadata queries до PostgreSQL.
+  - Runtime guard перевіряє унікальність IDs, безперервні positions і відповідність legacy anchors.
 - [ ] **T-302 · P1** Розділити великий legacy `app.js` на simulator core, validators, renderers та persistence adapters.
 - [ ] **T-303 · P1** Створити reusable lesson shell із theory, code, diagram, practice та result sections.
 - [ ] **T-304 · P1** Створити reusable simulator engine зі structured result `{ valid, code, message, affectedIds }`.
@@ -117,15 +120,16 @@
 
 - [ ] Legacy course тимчасово дублюється в root і `public/legacy`; видаляти root-копію лише після перевірки нового runtime.
 - [ ] Course content частково залишається у великому HTML-файлі.
+- [ ] Legacy navigation ще дублює module/lesson metadata у `public/legacy/app.js`; перенести її на спільний runtime payload у T-302.
 - [ ] Повний lesson HTML захищений server redirect, але simulator-конфігурації legacy runtime ще доступні як public assets; перенести lesson payloads у server/data-driven modules у межах T-301/T-302.
 - [ ] Validators і DOM rendering поки поєднані у великому `app.js`.
 - [ ] Історія simulator attempts доступна через API, але ще не має окремого UI.
 
 ## Рекомендований порядок наступних робіт
 
-1. T-206 — підключити custom SMTP і CAPTCHA, потім перевірити confirmation/recovery email end-to-end.
-2. T-301 — винести lesson metadata та content contract у data-driven modules.
-3. T-302 — розділити legacy runtime на simulator core, validators, renderers та persistence adapters.
+1. T-302 — розділити legacy runtime на simulator core, validators, renderers та persistence adapters.
+2. T-303 — створити reusable lesson shell для наступних курсів.
+3. T-206 — після отримання SMTP і CAPTCHA credentials завершити email flow end-to-end.
 
 ## Як оновлювати tracker
 

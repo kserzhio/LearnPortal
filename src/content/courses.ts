@@ -1,29 +1,12 @@
-export type CourseSummary = {
-  id: string;
-  slug: string;
-  title: string;
-  description: string;
-  lessonCount: number;
-  duration: string;
-  level: string;
-  status: "published" | "planned";
-  accent: string;
-  legacyPath?: string;
-};
+import { getLessons, toCourseSummary, type CourseDefinition, type CourseSummary } from "@/content/course-contract";
+import { highLoadArchitectureCourse } from "@/content/courses/high-load-architecture";
 
-export const courses: CourseSummary[] = [
-  {
-    id: "high-load-architecture",
-    slug: "high-load-architecture",
-    title: "Архітектура високонавантажених систем",
-    description: "Від оцінки навантаження до відмовостійкого multi-region System Design.",
-    lessonCount: 19,
-    duration: "≈24 години",
-    level: "Middle → Senior",
-    status: "published",
-    accent: "HL",
-    legacyPath: "/legacy/index.html#lesson-1",
-  },
+export type { CourseDefinition, CourseSummary, LessonDefinition } from "@/content/course-contract";
+
+export const courseDefinitions: readonly CourseDefinition[] = [highLoadArchitectureCourse];
+
+export const courses: readonly CourseSummary[] = [
+  toCourseSummary(highLoadArchitectureCourse),
   {
     id: "frontend-architecture",
     slug: "frontend-architecture",
@@ -50,6 +33,19 @@ export const courses: CourseSummary[] = [
 
 export function getCourseBySlug(slug: string) {
   return courses.find((course) => course.slug === slug);
+}
+
+export function getCourseDefinition(courseId: string) {
+  return courseDefinitions.find((course) => course.id === courseId);
+}
+
+export function getCourseLessons(courseId: string) {
+  const course = getCourseDefinition(courseId);
+  return course ? getLessons(course) : [];
+}
+
+export function getLessonById(courseId: string, lessonId: string) {
+  return getCourseLessons(courseId).find((lesson) => lesson.id === lessonId);
 }
 
 export function getCourseLessonPath(course: CourseSummary, lessonPosition: number) {
