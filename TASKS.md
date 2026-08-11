@@ -72,6 +72,8 @@
 - [x] **T-109 · P0 · Owner: Codex** Провести production smoke test.
   - Depends on: T-104, T-105, T-108.
   - Done when: landing, catalog, lesson navigation, обидва OAuth providers, progress sync і sign-out проходять перевірку без console errors.
+- [x] **T-111 · P0 · Owner: Codex** Підключити Vercel project до GitHub repository.
+  - Done when: push у `main` автоматично створює production deployment без локального Vercel CLI token.
 
 ## Зараз: M2 — Повноцінний learning account
 
