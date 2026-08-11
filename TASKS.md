@@ -1,6 +1,6 @@
 # Systema Task Tracker
 
-Останнє оновлення: 2026-08-10
+Останнє оновлення: 2026-08-11
 
 Цей файл є основним tracker-ом продукту. Завершені задачі позначаємо `[x]`, активну задачу — `🚧`, заблоковану — `⛔`, заплановану — `[ ]`.
 
@@ -9,7 +9,7 @@
 - Репозиторій: [kserzhio/LearnPortal](https://github.com/kserzhio/LearnPortal)
 - Production URL: [learn-portal-gamma.vercel.app](https://learn-portal-gamma.vercel.app)
 - Активний етап: **M3 — Платформа для багатьох курсів**
-- Наступна задача: **T-302 — розділити legacy runtime на окремі модулі**
+- Наступна задача: **T-303 — створити reusable lesson shell**
 
 ## Завершено
 
@@ -99,7 +99,10 @@
   - Реалізовано: типізований course contract, 6 modules і 19 lessons зі stable IDs, topics, practice, validation expectations та outcomes.
   - Next.js preview, dashboard resume, simulator history і access count використовують catalog source без додаткових metadata queries до PostgreSQL.
   - Runtime guard перевіряє унікальність IDs, безперервні positions і відповідність legacy anchors.
-- [ ] **T-302 · P1** Розділити великий legacy `app.js` на simulator core, validators, renderers та persistence adapters.
+- [x] **T-302 · P1** Розділити великий legacy `app.js` на simulator core, validators, renderers та persistence adapters.
+  - `app.js` тепер є компактним ES-module bootstrap; навігація, progress persistence, UI feedback і чотири доменні групи симуляторів ізольовані в `public/legacy/runtime`.
+  - Додано контракт structured validation result та спільний renderer; фінальний System Design використовує обидва шари.
+  - Legacy navigation отримує доступні modules/lessons із server route; гостьовий payload містить лише preview-заняття.
 - [ ] **T-303 · P1** Створити reusable lesson shell із theory, code, diagram, practice та result sections.
 - [ ] **T-304 · P1** Створити reusable simulator engine зі structured result `{ valid, code, message, affectedIds }`.
 - [ ] **T-305 · P2** Додати курс «Архітектура сучасного Frontend».
@@ -122,15 +125,14 @@
 
 - [ ] Legacy course тимчасово дублюється в root і `public/legacy`; видаляти root-копію лише після перевірки нового runtime.
 - [ ] Course content частково залишається у великому HTML-файлі.
-- [ ] Legacy navigation ще дублює module/lesson metadata у `public/legacy/app.js`; перенести її на спільний runtime payload у T-302.
 - [ ] Повний lesson HTML захищений server redirect, але simulator-конфігурації legacy runtime ще доступні як public assets; перенести lesson payloads у server/data-driven modules у межах T-301/T-302.
-- [ ] Validators і DOM rendering поки поєднані у великому `app.js`.
+- [ ] Частина lesson-specific validators і DOM rendering ще поєднана всередині доменних simulator modules; уніфікувати їх через engine у T-304.
 - [ ] Історія simulator attempts доступна через API, але ще не має окремого UI.
 
 ## Рекомендований порядок наступних робіт
 
-1. T-302 — розділити legacy runtime на simulator core, validators, renderers та persistence adapters.
-2. T-303 — створити reusable lesson shell для наступних курсів.
+1. T-303 — створити reusable lesson shell для наступних курсів.
+2. T-304 — уніфікувати simulator validation та rendering через reusable engine.
 3. T-206 — після отримання SMTP і CAPTCHA credentials завершити email flow end-to-end.
 
 ## Як оновлювати tracker
