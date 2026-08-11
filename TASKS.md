@@ -9,7 +9,7 @@
 - Репозиторій: [kserzhio/LearnPortal](https://github.com/kserzhio/LearnPortal)
 - Production URL: [learn-portal-gamma.vercel.app](https://learn-portal-gamma.vercel.app)
 - Активний етап: **M3 — Платформа для багатьох курсів**
-- Наступна задача: **T-303 — створити reusable lesson shell**
+- Наступна задача: **T-304 — створити reusable simulator engine**
 
 ## Завершено
 
@@ -103,7 +103,10 @@
   - `app.js` тепер є компактним ES-module bootstrap; навігація, progress persistence, UI feedback і чотири доменні групи симуляторів ізольовані в `public/legacy/runtime`.
   - Додано контракт structured validation result та спільний renderer; фінальний System Design використовує обидва шари.
   - Legacy navigation отримує доступні modules/lessons із server route; гостьовий payload містить лише preview-заняття.
-- [ ] **T-303 · P1** Створити reusable lesson shell із theory, code, diagram, practice та result sections.
+- [x] **T-303 · P1** Створити reusable lesson shell із theory, code, diagram, practice та result sections.
+  - Server Component приймає lesson contract, code example, system diagram і optional practice/result slots без client-side JavaScript.
+  - Shell має URL-якорі, семантичну heading hierarchy, текстову альтернативу схеми, expected success/failure та responsive reflow.
+  - Preview заняття 1 переведено на спільний shell і використовує course data як єдине джерело topics, practice та outcome.
 - [ ] **T-304 · P1** Створити reusable simulator engine зі structured result `{ valid, code, message, affectedIds }`.
 - [ ] **T-305 · P2** Додати курс «Архітектура сучасного Frontend».
 - [ ] **T-306 · P2** Додати курс «Platform Engineering та DevOps».
@@ -131,8 +134,8 @@
 
 ## Рекомендований порядок наступних робіт
 
-1. T-303 — створити reusable lesson shell для наступних курсів.
-2. T-304 — уніфікувати simulator validation та rendering через reusable engine.
+1. T-304 — уніфікувати simulator validation та rendering через reusable engine.
+2. T-305 — додати курс «Архітектура сучасного Frontend».
 3. T-206 — після отримання SMTP і CAPTCHA credentials завершити email flow end-to-end.
 
 ## Як оновлювати tracker
