@@ -9,7 +9,7 @@
 - Репозиторій: [kserzhio/LearnPortal](https://github.com/kserzhio/LearnPortal)
 - Production URL: [learn-portal-gamma.vercel.app](https://learn-portal-gamma.vercel.app)
 - Активний етап: **M3 — Платформа для багатьох курсів**
-- Наступна задача: **T-304 — створити reusable simulator engine**
+- Наступна задача: **T-305 — додати курс «Архітектура сучасного Frontend»**
 
 ## Завершено
 
@@ -107,7 +107,10 @@
   - Server Component приймає lesson contract, code example, system diagram і optional practice/result slots без client-side JavaScript.
   - Shell має URL-якорі, семантичну heading hierarchy, текстову альтернативу схеми, expected success/failure та responsive reflow.
   - Preview заняття 1 переведено на спільний shell і використовує course data як єдине джерело topics, practice та outcome.
-- [ ] **T-304 · P1** Створити reusable simulator engine зі structured result `{ valid, code, message, affectedIds }`.
+- [x] **T-304 · P1** Створити reusable simulator engine зі structured result `{ valid, code, message, affectedIds }`.
+  - Engine інкапсулює state та надає lifecycle `initialize`, `update`, `replace`, `validate`, `serialize` і `reset`.
+  - Validator contract перевіряється перед rendering; persistence отримує серіалізований snapshot та validation result через окремий hook.
+  - Фінальний System Design переведено з mutable global state на engine; automated check покриває invalid, valid, repeated validation, state isolation і reset.
 - [ ] **T-305 · P2** Додати курс «Архітектура сучасного Frontend».
 - [ ] **T-306 · P2** Додати курс «Platform Engineering та DevOps».
 - [ ] **T-307 · P2** Підготувати localization boundary для української та англійської мов.
@@ -129,13 +132,13 @@
 - [ ] Legacy course тимчасово дублюється в root і `public/legacy`; видаляти root-копію лише після перевірки нового runtime.
 - [ ] Course content частково залишається у великому HTML-файлі.
 - [ ] Повний lesson HTML захищений server redirect, але simulator-конфігурації legacy runtime ще доступні як public assets; перенести lesson payloads у server/data-driven modules у межах T-301/T-302.
-- [ ] Частина lesson-specific validators і DOM rendering ще поєднана всередині доменних simulator modules; уніфікувати їх через engine у T-304.
+- [ ] Решту lesson-specific simulators поступово підключити до reusable engine під час редагування відповідних занять; фінальний System Design уже мігровано в T-304.
 - [ ] Історія simulator attempts доступна через API, але ще не має окремого UI.
 
 ## Рекомендований порядок наступних робіт
 
-1. T-304 — уніфікувати simulator validation та rendering через reusable engine.
-2. T-305 — додати курс «Архітектура сучасного Frontend».
+1. T-305 — додати курс «Архітектура сучасного Frontend».
+2. T-306 — додати курс «Platform Engineering та DevOps».
 3. T-206 — після отримання SMTP і CAPTCHA credentials завершити email flow end-to-end.
 
 ## Як оновлювати tracker

@@ -1,3 +1,4 @@
+import { createSimulatorEngine } from '../core/simulator-engine.js';
 import { renderValidationPanel } from '../renderers/validation-panel.js';
 import { validationResult } from '../validators/validation-result.js';
 
@@ -256,11 +257,20 @@ const finalDesignConfig = {
     ] },
   },
 };
-const finalDesignState = { components: new Set(), chaosActive: false };
+const finalDesignEngine = createSimulatorEngine({
+  createInitialState: () => ({ components: new Set() }),
+  cloneState: state => ({ components: new Set(state.components) }),
+  serialize: getFinalDesignState,
+  validate: validateFinalDesign,
+  render: renderFinalArchitecture,
+  renderValidation: showFinalValidation,
+  resetValidation: resetFinalValidation,
+  recordAttempt: state => architectureService.recordAttempt(state),
+});
 
-function getFinalDesignState() {
+function getFinalDesignState(finalState = finalDesignEngine.read()) {
   return {
-    components: [...finalDesignState.components],
+    components: [...finalState.components],
     rules: [...document.querySelectorAll('[data-final-rule]')].map(select => ({ id: select.dataset.finalRule, value: select.value })),
     scenario: document.querySelector('#finalChaosScenario').value,
   };
@@ -268,7 +278,7 @@ function getFinalDesignState() {
 
 function applyFinalDesignState(state) {
   const knownComponents = new Set(Object.keys(finalDesignConfig.components));
-  finalDesignState.components = new Set((state.components || []).filter(id => knownComponents.has(id)));
+  const components = new Set((state.components || []).filter(id => knownComponents.has(id)));
   const savedRules = new Map((state.rules || []).map(rule => [rule.id, rule.value]));
   document.querySelectorAll('[data-final-rule]').forEach(select => {
     const value = savedRules.get(select.dataset.finalRule) || '';
@@ -277,8 +287,7 @@ function applyFinalDesignState(state) {
   const scenario = document.querySelector('#finalChaosScenario');
   if ([...scenario.options].some(option => option.value === state.scenario)) scenario.value = state.scenario;
   resetFinalChaos();
-  resetFinalValidation();
-  renderFinalArchitecture();
+  finalDesignEngine.replace({ components });
 }
 function createFinalComponentNode(componentId) {
   const component = finalDesignConfig.components[componentId];
@@ -294,10 +303,10 @@ function createFinalComponentNode(componentId) {
   return button;
 }
 
-function renderFinalArchitecture() {
+function renderFinalArchitecture(finalState = finalDesignEngine.read()) {
   const canvas = document.querySelector('#finalArchitectureCanvas');
   canvas.replaceChildren();
-  if (!finalDesignState.components.size) {
+  if (!finalState.components.size) {
     const empty = document.createElement('p');
     empty.textContent = 'Додай CDN як перший edge component';
     canvas.append(empty);
@@ -305,7 +314,7 @@ function renderFinalArchitecture() {
     const topology = document.createElement('div');
     topology.className = 'final-tier-topology';
     finalDesignConfig.tiers.forEach(tier => {
-      const tierComponents = Object.entries(finalDesignConfig.components).filter(([id, component]) => component.tier === tier.id && finalDesignState.components.has(id));
+      const tierComponents = Object.entries(finalDesignConfig.components).filter(([id, component]) => component.tier === tier.id && finalState.components.has(id));
       if (!tierComponents.length) return;
       const section = document.createElement('section');
       const heading = document.createElement('span');
@@ -318,7 +327,7 @@ function renderFinalArchitecture() {
     canvas.append(topology);
   }
   document.querySelectorAll('[data-final-component]').forEach(button => {
-    const selected = finalDesignState.components.has(button.dataset.finalComponent);
+    const selected = finalState.components.has(button.dataset.finalComponent);
     button.disabled = selected;
     button.setAttribute('aria-pressed', String(selected));
   });
@@ -338,9 +347,9 @@ function renderFinalAnalysis() {
   document.querySelector('#finalRtoMetric').textContent = state.rules.some(rule => rule.id === 'pitr-rpo-rto' && rule.value === rule.id) ? '≤60m' : '—';
 }
 
-function validateFinalDesign() {
-  const state = getFinalDesignState();
-  const missingComponent = Object.keys(finalDesignConfig.components).find(id => !finalDesignState.components.has(id));
+function validateFinalDesign(finalState = finalDesignEngine.read()) {
+  const state = getFinalDesignState(finalState);
+  const missingComponent = Object.keys(finalDesignConfig.components).find(id => !finalState.components.has(id));
   if (missingComponent) {
     const component = finalDesignConfig.components[missingComponent];
     return validationResult(false, 'missing-final-component', `Додай ${component.label}: без цього component один із required user journeys не має повного path.`, [missingComponent]);
@@ -383,7 +392,6 @@ function showFinalValidation(result) {
 }
 
 function resetFinalChaos() {
-  finalDesignState.chaosActive = false;
   document.querySelector('#finalChaosTitle').textContent = 'Failure не запущено';
   document.querySelector('#finalChaosMessage').textContent = 'Перевір architecture перед experiment.';
   const log = document.querySelector('#finalChaosLog');
@@ -404,7 +412,6 @@ function resetFinalChaos() {
 
 function renderFinalChaos() {
   const scenario = finalDesignConfig.chaos[document.querySelector('#finalChaosScenario').value];
-  finalDesignState.chaosActive = true;
   document.querySelector('#finalChaosTitle').textContent = scenario.title;
   document.querySelector('#finalChaosMessage').textContent = 'Blast radius обмежено, abort conditions не порушено, critical journey відновлено.';
   const log = document.querySelector('#finalChaosLog');
@@ -511,7 +518,7 @@ document.querySelector('#importArchitectureFile').addEventListener('change', asy
   }
   applyFinalDesignState(result.architecture.state);
   document.querySelector('#architectureTitle').value = result.architecture.title;
-  showFinalValidation(validateFinalDesign());
+  finalDesignEngine.validate({ recordAttempt: false });
   setArtifactStatus(`Імпортовано «${result.architecture.title}». Перевір і збережи схему.`, 'success');
   input.value = '';
 });
@@ -547,7 +554,7 @@ architectureList.addEventListener('click', async event => {
 
   if (button.dataset.architectureAction === 'load') {
     applyFinalDesignState(architecture.state);
-    showFinalValidation(validateFinalDesign());
+    finalDesignEngine.validate({ recordAttempt: false });
     setArtifactStatus(`Відкрито схему «${architecture.title}».`, 'success');
     return;
   }
@@ -576,18 +583,20 @@ architectureList.addEventListener('click', async event => {
 document.querySelector('#finalComponentPalette').addEventListener('click', event => {
   const button = event.target.closest('[data-final-component]');
   if (!button) return;
-  finalDesignState.components.add(button.dataset.finalComponent);
   resetFinalChaos();
-  resetFinalValidation();
-  renderFinalArchitecture();
+  finalDesignEngine.update(state => {
+    state.components.add(button.dataset.finalComponent);
+    return state;
+  });
 });
 document.querySelector('#finalArchitectureCanvas').addEventListener('click', event => {
   const button = event.target.closest('[data-remove-final-component]');
   if (!button) return;
-  finalDesignState.components.delete(button.dataset.removeFinalComponent);
   resetFinalChaos();
-  resetFinalValidation();
-  renderFinalArchitecture();
+  finalDesignEngine.update(state => {
+    state.components.delete(button.dataset.removeFinalComponent);
+    return state;
+  });
 });
 document.querySelector('#finalReliabilityForm').addEventListener('change', () => {
   resetFinalChaos();
@@ -595,31 +604,24 @@ document.querySelector('#finalReliabilityForm').addEventListener('change', () =>
   renderFinalAnalysis();
 });
 document.querySelector('#finalDesignExample').addEventListener('click', () => {
-  finalDesignState.components = new Set(Object.keys(finalDesignConfig.components));
   document.querySelectorAll('[data-final-rule]').forEach(select => { select.value = select.dataset.finalRule; });
   resetFinalChaos();
-  resetFinalValidation();
-  renderFinalArchitecture();
+  finalDesignEngine.replace({ components: new Set(Object.keys(finalDesignConfig.components)) });
 });
 document.querySelector('#finalDesignReset').addEventListener('click', () => {
-  finalDesignState.components.clear();
   document.querySelector('#finalReliabilityForm').reset();
   resetFinalChaos();
-  resetFinalValidation();
-  renderFinalArchitecture();
+  finalDesignEngine.reset();
 });
 document.querySelector('#validateFinalDesign').addEventListener('click', () => {
-  const state = getFinalDesignState();
-  showFinalValidation(validateFinalDesign());
-  architectureService.recordAttempt(state);
+  finalDesignEngine.validate();
 });
 document.querySelector('#runFinalChaos').addEventListener('click', () => {
-  const validation = validateFinalDesign();
-  showFinalValidation(validation);
+  const validation = finalDesignEngine.validate({ recordAttempt: false });
   if (!validation.valid) return;
   renderFinalChaos();
-  showFinalValidation({ valid: true, code: 'chaos-experiment-survived', message: `${finalDesignConfig.chaos[document.querySelector('#finalChaosScenario').value].title}: system зберіг critical journey і виконав перевірений recovery path.`, affectedIds: [] });
+  showFinalValidation(validationResult(true, 'chaos-experiment-survived', `${finalDesignConfig.chaos[document.querySelector('#finalChaosScenario').value].title}: system зберіг critical journey і виконав перевірений recovery path.`));
 });
 
 renderObservabilityDashboard();
-renderFinalArchitecture();
+finalDesignEngine.initialize();
