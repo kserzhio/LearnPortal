@@ -1,0 +1,75 @@
+.section {
+  --kids-ink: #111426;
+  --kids-panel: #1b2038;
+  --kids-line: #68708f;
+  --kids-text: #f8f9ff;
+  --kids-muted: #c9cee2;
+  --kids-lime: #c8f35e;
+  --kids-violet: #a9a0ff;
+  width: min(100%, 78rem);
+  margin: clamp(3rem, 7vw, 6rem) auto 0;
+  color: var(--kids-text);
+  background: var(--kids-ink);
+}
+
+.dashboardVariant { width: 100%; }
+.heading { display: flex; justify-content: space-between; gap: clamp(1.5rem, 5vw, 5rem); align-items: end; padding: clamp(1.25rem, 4vw, 2.5rem); border-bottom: .0625rem solid var(--kids-line); }
+.heading > div > span,
+.mode { color: var(--kids-violet); font: 800 1rem var(--font-mono), monospace; letter-spacing: .08em; }
+.heading h2 { max-width: 42rem; margin: .65rem 0 0; font-size: clamp(2rem, 5vw, 3.8rem); line-height: 1; letter-spacing: -.04em; }
+.heading p { max-width: 30rem; margin: 0; color: var(--kids-muted); font-size: 1rem; line-height: 1.6; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.card { display: flex; min-width: 0; padding: clamp(1.25rem, 4vw, 2rem); flex-direction: column; border-right: .0625rem solid var(--kids-line); background: var(--kids-panel); }
+.card:last-child { border-right: 0; }
+.codeCard { background: #22203d; }
+.cardTop { display: flex; justify-content: space-between; gap: 1rem; align-items: start; }
+.courseMark { display: grid; width: 3.25rem; min-height: 3.25rem; place-items: center; color: var(--kids-ink); background: var(--kids-lime); font: 900 1rem var(--font-mono), monospace; }
+.codeCard .courseMark { color: var(--kids-text); background: #5748c9; }
+.age { padding: .45rem .65rem; color: var(--kids-text); border: .0625rem solid var(--kids-line); font-size: 1rem; font-weight: 800; }
+.miniGame { display: flex; gap: .45rem; align-items: center; min-height: 6rem; margin: 1.5rem 0; padding: 1rem; border: .0625rem solid var(--kids-line); background: #101329; }
+.miniGame i { display: block; width: min(12%, 2.5rem); aspect-ratio: 1; border: .0625rem solid var(--kids-line); background: #292f4f; }
+.robot,
+.goal { display: grid; width: min(18%, 3.5rem); aspect-ratio: 1; place-items: center; font-size: 1.35rem; font-weight: 900; }
+.robot { color: var(--kids-ink); border-radius: 35%; background: var(--kids-lime); }
+.goal { margin-left: auto; color: var(--kids-lime); border: .125rem dashed var(--kids-lime); }
+.card h3 { margin: .7rem 0; font-size: clamp(1.5rem, 4vw, 2.2rem); line-height: 1.1; }
+.card > p { min-height: 3.5rem; margin: 0; color: var(--kids-muted); font-size: 1rem; line-height: 1.65; }
+.card > .description { flex-grow: 1; }
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 1.5rem 0 0; border-block: .0625rem solid var(--kids-line); }
+.facts div { min-width: 0; padding: .75rem; border-right: .0625rem solid var(--kids-line); }
+.facts div:last-child { border-right: 0; }
+.facts dt,
+.facts dd { font-size: 1rem; }
+.facts dt { color: var(--kids-muted); }
+.facts dd { margin: .4rem 0 0; font-weight: 800; overflow-wrap: anywhere; }
+.progressBlock { margin-top: 1.25rem; }
+.progressBlock > div { display: flex; justify-content: space-between; gap: 1rem; font-size: 1rem; }
+.progressBlock strong { color: #ffe27a; }
+.progressBlock progress { width: 100%; height: .7rem; margin-top: .55rem; border: 0; accent-color: var(--kids-lime); background: #303653; }
+.progressBlock progress::-webkit-progress-bar { background: #303653; }
+.progressBlock progress::-webkit-progress-value { background: var(--kids-lime); }
+.progressBlock progress::-moz-progress-bar { background: var(--kids-lime); }
+.card .previewNote { min-height: 0; margin-top: 1.25rem; }
+.action { display: flex; gap: 1rem; min-height: 3rem; margin-top: 1.25rem; padding: .75rem 1rem; align-items: center; justify-content: space-between; color: var(--kids-ink); background: var(--kids-lime); font-size: 1rem; font-weight: 900; text-decoration: none; }
+.codeCard .action { color: var(--kids-text); background: #5748c9; }
+.section a:focus-visible { outline: .1875rem solid var(--kids-lime); outline-offset: .1875rem; }
+
+@media (max-width: 48em) {
+  .heading { align-items: start; flex-direction: column; }
+  .grid { grid-template-columns: 1fr; }
+  .card { border-right: 0; border-bottom: .0625rem solid var(--kids-line); }
+  .card:last-child { border-bottom: 0; }
+}
+
+@media (max-width: 30em) {
+  .facts { grid-template-columns: 1fr; }
+  .facts div { display: flex; justify-content: space-between; gap: 1rem; border-right: 0; border-bottom: .0625rem solid var(--kids-line); }
+  .facts div:last-child { border-bottom: 0; }
+  .facts dd { margin: 0; }
+}
+
+@media (forced-colors: active) {
+  .card,
+  .miniGame,
+  .action { border: .125rem solid CanvasText; }
+}

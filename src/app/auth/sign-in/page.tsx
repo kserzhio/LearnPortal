@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { EmailAuthForm } from "@/components/email-auth-form";
 import { SignInButtons } from "@/components/sign-in-buttons";
+import { SystemIcon } from "@/components/ui/system-icon";
 import { getSafeAuthRedirect } from "@/lib/auth/redirect";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 
@@ -37,7 +38,7 @@ export default async function SignInPage({
         <div className="auth-divider"><span>або</span></div>
         <SignInButtons configured={configured} nextPath={nextPath} />
         <small>Вхід не надає Systema доступу до репозиторіїв, Google Drive чи інших приватних даних.</small>
-        <Link href="/courses">Продовжити без входу →</Link>
+        <Link href="/courses">Продовжити без входу <SystemIcon name="arrow-right" /></Link>
       </section>
     </main>
   );

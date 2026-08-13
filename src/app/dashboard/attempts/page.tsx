@@ -6,6 +6,7 @@ import { getAttemptFeedback, getSimulatorTitle } from "@/lib/simulators/attempt-
 import { FINAL_DESIGN_COURSE_ID, FINAL_DESIGN_LESSON_ID } from "@/lib/simulators/final-system-design";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { SystemIcon } from "@/components/ui/system-icon";
 
 export const metadata: Metadata = { title: "Історія спроб симулятора" };
 const attemptDateFormatter = new Intl.DateTimeFormat("uk-UA", {
@@ -49,7 +50,7 @@ export default async function SimulatorAttemptsPage() {
           <h1>Історія архітектурних рішень</h1>
           <p>Кожна спроба показує не лише score, а й причину результату та наступний крок для виправлення системи.</p>
         </div>
-        <Link className="secondary-link" href="/dashboard">← До кабінету</Link>
+        <Link className="secondary-link" href="/dashboard"><SystemIcon name="arrow-left" /> До кабінету</Link>
       </header>
 
       {hasLoadError ? <p className="attempt-history-error" role="alert">Не вдалося завантажити історію. Онови сторінку або спробуй пізніше.</p> : null}
@@ -59,7 +60,7 @@ export default async function SimulatorAttemptsPage() {
           <span>0 СПРОБ</span>
           <h2>Історія з’явиться після першої перевірки</h2>
           <p>Відкрий фінальне заняття, побудуй архітектуру та запусти validation.</p>
-          <Link className="primary-link" href={finalDesignHref}>Відкрити фінальний симулятор <span>→</span></Link>
+          <Link className="primary-link" href={finalDesignHref}>Відкрити фінальний симулятор <SystemIcon name="arrow-right" /></Link>
         </section>
       ) : null}
 
@@ -97,7 +98,7 @@ export default async function SimulatorAttemptsPage() {
                     <p>{feedback.explanation}</p>
                     <p><strong>Наступний крок:</strong> {feedback.nextStep}</p>
                   </div>
-                  <Link href={lessonHref}>Відкрити заняття та перевірити ще раз →</Link>
+                  <Link href={lessonHref}>Відкрити заняття та перевірити ще раз <SystemIcon name="arrow-right" /></Link>
                 </article>
               </li>
             );

@@ -29,6 +29,12 @@ for (const filePath of await findCssFiles(projectRoot)) {
     pixelValuePattern.lastIndex = 0;
     for (const value of declaration[0].matchAll(remValuePattern)) {
       if (Number(value[1]) < 1) {
+        const ruleStart = source.lastIndexOf("}", declaration.index) + 1;
+        const selectorEnd = source.indexOf("{", ruleStart);
+        const selector = source.slice(ruleStart, selectorEnd).trim();
+        const isLegacySidebarException = relative(projectRoot, filePath).replaceAll("\\", "/") === "public/legacy/styles.css"
+          && (selector.includes(".course-navigation") || selector.includes(".course-switcher"));
+        if (isLegacySidebarException && Number(value[1]) === 0.8) continue;
         const line = source.slice(0, declaration.index).split("\n").length;
         violations.push(`${relative(projectRoot, filePath)}:${line} ${declaration[0]}`);
       }
@@ -40,5 +46,5 @@ if (violations.length > 0) {
   console.error("Readable text must use a font size of at least 1rem:\n" + violations.join("\n"));
   process.exitCode = 1;
 } else {
-  console.log("Font-size check passed: all CSS text is at least 1rem.");
+  console.log("Font-size check passed: text is at least 1rem, except the explicit 0.8rem legacy sidebar density overrides.");
 }

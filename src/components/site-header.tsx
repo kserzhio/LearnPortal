@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { SystemIcon } from "@/components/ui/system-icon";
 
 export async function SiteHeader() {
   const supabase = await createSupabaseServerClient();
   const user = supabase ? (await supabase.auth.getUser()).data.user : null;
+  const profile = user && supabase ? await supabase.from("profiles").select("role").eq("id",user.id).maybeSingle() : null;
+  const canViewGrowth = ["ADMIN","INSTRUCTOR"].includes(profile?.data?.role ?? "");
 
   return (
     <header className="site-header">
@@ -13,14 +16,19 @@ export async function SiteHeader() {
       </Link>
       <nav aria-label="Головна навігація">
         <Link href="/courses">Курси</Link>
-        {user ? <Link href="/dashboard">Мій прогрес</Link> : null}
-        {user ? <Link href="/profile">Профіль</Link> : null}
+        <Link href="/paths">Шляхи</Link>
+        <Link href="/skills">Навички</Link>
+        <Link href="/system-design">System Design</Link>
+        <Link href="/kids">Для дітей</Link>
+        <Link href="/#method">Як це працює</Link>
+        {user ? <Link href="/dashboard">Продовжити</Link> : null}
+        {canViewGrowth ? <Link href="/dashboard/growth">Аналітика</Link> : null}
       </nav>
       <div className="auth-slot">
         {user ? (
           <>
             <Link className="user-chip" href="/profile" aria-label="Відкрити профіль" title={user.email ?? "Користувач"}>
-              {(user.email?.[0] ?? "U").toUpperCase()}
+              <SystemIcon name="user" />
             </Link>
             <form action="/auth/sign-out" method="post">
               <button className="quiet-button" type="submit">Вийти</button>

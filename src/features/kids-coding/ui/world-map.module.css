@@ -1,0 +1,102 @@
+.page {
+  --map-bg: #0f1224;
+  --map-panel: #1a2038;
+  --map-panel-strong: #222945;
+  --map-line: #737b9d;
+  --map-text: #f8f9ff;
+  --map-muted: #cbd0e3;
+  --map-lime: #c8f35e;
+  --map-violet: #b7afff;
+  min-height: 100vh;
+  color: var(--map-text);
+  background: var(--map-bg);
+}
+
+.navigation { display: flex; width: min(100% - 2rem, 80rem); min-height: 4rem; margin-inline: auto; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: .0625rem solid var(--map-line); }
+.navigation a { color: var(--map-text); font-size: 1rem; font-weight: 800; text-decoration-thickness: .0625rem; text-underline-offset: .35rem; }
+.navigation a:hover { color: var(--map-lime); }
+.page a:focus-visible { outline: .1875rem solid var(--map-lime); outline-offset: .1875rem; }
+.hero { display: grid; width: min(100% - 2rem, 80rem); margin-inline: auto; padding-block: clamp(2rem, 6vw, 5rem); grid-template-columns: auto minmax(0, 1fr) auto; gap: clamp(1.25rem, 4vw, 3rem); align-items: start; }
+.courseMark { display: grid; width: 4rem; aspect-ratio: 1; place-items: center; color: #111426; background: var(--map-lime); font: 900 1rem var(--font-mono), monospace; }
+.heroCopy > span,
+.sectionHeading > div > span { color: var(--map-violet); font: 800 1rem var(--font-mono), monospace; letter-spacing: .08em; }
+.heroCopy h1 { max-width: 46rem; margin: .7rem 0 1rem; font-size: clamp(2.25rem, 7vw, 5.5rem); line-height: .95; letter-spacing: -.05em; }
+.heroCopy p { max-width: 42rem; margin: 0; color: var(--map-muted); font-size: 1rem; line-height: 1.65; }
+.summary { display: flex; margin: 0; gap: .75rem; }
+.summary div { min-width: 7.5rem; padding: 1rem; border: .0625rem solid var(--map-line); background: var(--map-panel); }
+.summary dt { color: var(--map-muted); font-size: 1rem; }
+.summary dd { margin: .35rem 0 0; color: var(--map-lime); font-size: 1.35rem; font-weight: 900; }
+.overallProgress { grid-column: 2 / -1; }
+.overallProgress label { display: block; margin-bottom: .55rem; color: var(--map-muted); font-size: 1rem; }
+.overallProgress progress { width: 100%; height: .8rem; border: 0; accent-color: var(--map-lime); background: #343b5d; }
+.overallProgress progress::-webkit-progress-bar { background: #343b5d; }
+.overallProgress progress::-webkit-progress-value { background: var(--map-lime); }
+.overallProgress progress::-moz-progress-bar { background: var(--map-lime); }
+.mapSection { width: min(100% - 2rem, 80rem); margin-inline: auto; padding-bottom: clamp(3rem, 8vw, 7rem); }
+.sectionHeading { display: flex; padding-block: 1.5rem; align-items: end; justify-content: space-between; gap: 2rem; border-block: .0625rem solid var(--map-line); }
+.sectionHeading h2 { margin: .5rem 0 0; font-size: clamp(1.8rem, 4vw, 3rem); }
+.legend { display: flex; margin: 0; padding: 0; flex-wrap: wrap; gap: .7rem 1.25rem; list-style: none; }
+.legend li { color: var(--map-muted); font-size: 1rem; }
+.legend span { color: var(--map-lime); font-weight: 900; }
+.worlds,
+.levels { margin: 0; padding: 0; list-style: none; }
+.world { --world-accent: var(--map-violet); position: relative; padding-block: clamp(1.5rem, 5vw, 3.5rem); border-bottom: .0625rem solid var(--map-line); }
+.world::before { position: absolute; inset: 0 auto 0 2rem; width: .125rem; content: ""; background: linear-gradient(var(--world-accent), transparent); opacity: .65; }
+.world > article { display: grid; grid-template-columns: minmax(15rem, .75fr) minmax(0, 1.25fr); gap: clamp(1.5rem, 6vw, 6rem); }
+.village { --world-accent: #c8f35e; }
+.forest { --world-accent: #6ee7a8; }
+.desert { --world-accent: #ffd166; }
+.iceWorld { --world-accent: #83d9ff; }
+.space { --world-accent: #b7afff; }
+.defaultTheme { --world-accent: #e3e6f4; }
+.worldHeading { position: relative; display: flex; gap: 1.25rem; align-items: start; }
+.worldNumber { display: grid; z-index: 1; width: 4rem; min-width: 4rem; aspect-ratio: 1; place-items: center; color: #101426; background: var(--world-accent); font: 900 1rem var(--font-mono), monospace; }
+.worldStatus { color: var(--world-accent); font: 800 1rem var(--font-mono), monospace; letter-spacing: .06em; text-transform: uppercase; }
+.worldHeading h3 { margin: .45rem 0; font-size: clamp(1.7rem, 4vw, 2.7rem); line-height: 1; }
+.worldHeading p { margin: 0; color: var(--map-muted); font-size: 1rem; line-height: 1.6; }
+.levels { display: grid; gap: .75rem; }
+.level { display: grid; min-height: 5.25rem; padding: .85rem 1rem; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 1rem; color: var(--map-text); border: .0625rem solid var(--map-line); background: var(--map-panel); text-decoration: none; }
+a.level:hover { border-color: var(--world-accent); background: var(--map-panel-strong); }
+.levelSymbol { display: grid; width: 2.7rem; aspect-ratio: 1; place-items: center; color: #111426; background: var(--world-accent); font-size: 1.1rem; font-weight: 900; }
+.levelCopy { display: grid; min-width: 0; gap: .2rem; }
+.levelCopy strong { font-size: 1.1rem; overflow-wrap: anywhere; }
+.levelCopy > span:last-child { color: var(--map-muted); font-size: 1rem; }
+.levelNumber { color: var(--world-accent); font: 800 1rem var(--font-mono), monospace; }
+.stars { color: #ffe27a; font-size: 1rem; font-weight: 900; white-space: nowrap; }
+.currentLevel { border-width: .125rem; border-color: var(--world-accent); box-shadow: inset .35rem 0 0 var(--world-accent); }
+.completedLevel .levelSymbol { color: #102216; background: #6ee7a8; }
+.lockedLevel { color: #e3e6f4; border-style: dashed; background: #171b30; }
+.lockedLevel .levelSymbol { color: var(--map-text); background: #4d5575; }
+.lockedLevel .levelNumber,
+.lockedLevel .stars { color: #bfc5dc; }
+
+@media (max-width: 62em) {
+  .hero { grid-template-columns: auto minmax(0, 1fr); }
+  .summary { grid-column: 1 / -1; }
+  .overallProgress { grid-column: 1 / -1; }
+  .world > article { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 40em) {
+  .sectionHeading { align-items: start; flex-direction: column; }
+  .summary { display: grid; width: 100%; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .summary div { min-width: 0; }
+}
+
+@media (max-width: 25em) {
+  .hero { grid-template-columns: 1fr; }
+  .courseMark { width: 3.25rem; }
+  .summary { grid-template-columns: 1fr; }
+  .world::before { left: 1.6rem; }
+  .worldHeading { gap: .75rem; }
+  .worldNumber { width: 3.25rem; min-width: 3.25rem; }
+  .level { grid-template-columns: auto minmax(0, 1fr); }
+  .stars { grid-column: 2; }
+}
+
+@media (forced-colors: active) {
+  .courseMark,
+  .worldNumber,
+  .levelSymbol,
+  .level { border: .125rem solid CanvasText; }
+}

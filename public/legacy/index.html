@@ -8,15 +8,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260810-4">
+  <link rel="stylesheet" href="styles.css?v=20260812-8">
 </head>
 <body class="course-preview">
   <div class="app-shell">
-    <aside class="sidebar" id="sidebar">
-      <a class="brand" href="#top" aria-label="Systema — на головну">
-        <span class="brand-mark"><i></i><i></i><i></i></span>
-        <span>SYSTEMA</span>
-      </a>
+    <aside class="sidebar" id="sidebar" aria-label="Меню курсу">
+      <div class="sidebar-header">
+        <a class="brand" href="/" aria-label="Systema — на головну сторінку">
+          <span class="brand-mark"><i></i><i></i><i></i></span>
+          <span>SYSTEMA</span>
+        </a>
+        <button class="sidebar-close-button" id="sidebarCloseButton" type="button" aria-label="Закрити меню">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+
+      <a class="sidebar-home-link" href="/"><span aria-hidden="true">←</span> На головну порталу</a>
 
       <div class="course-switcher">
         <span class="eyebrow">Поточний курс</span>
@@ -38,14 +45,20 @@
       </div>
     </aside>
 
+    <button class="sidebar-backdrop" id="sidebarBackdrop" type="button" tabindex="-1" aria-label="Закрити меню" aria-hidden="true"></button>
+
     <div class="page">
       <header class="topbar">
-        <button class="menu-button" id="menuButton" type="button" aria-label="Відкрити меню">☰</button>
-        <div class="breadcrumbs"><span>Курс</span><b>/</b><span id="breadcrumbModule">Модуль 1</span><b>/</b><strong id="breadcrumbLesson">Заняття 1</strong></div>
+        <button class="menu-button" id="menuButton" type="button" aria-label="Відкрити меню" aria-controls="sidebar" aria-expanded="false">☰</button>
+        <nav class="breadcrumbs" aria-label="Навігаційний шлях">
+          <a href="/courses/high-load-architecture">Курс</a><b aria-hidden="true">/</b>
+          <a id="breadcrumbModule" href="#lesson-1">Модуль 1</a><b aria-hidden="true">/</b>
+          <strong id="breadcrumbLesson" aria-current="page">Заняття 1</strong>
+        </nav>
         <div class="top-actions">
           <button class="icon-button" id="themeButton" type="button" aria-label="Змінити тему">◐</button>
-          <div class="streak"><span>◆</span><b>1</b><small>день</small></div>
-          <div class="avatar">SK</div>
+          <div class="streak" id="learningDays" aria-label="Перший день навчання"><span aria-hidden="true">◆</span><b>1</b><small>день</small></div>
+          <a class="avatar" id="courseProfileLink" href="/profile" aria-label="Відкрити профіль">SK</a>
         </div>
       </header>
 
@@ -600,6 +613,6 @@
   <script src="progress-service.js"></script>
   <script src="architecture-format.js"></script>
   <script src="architecture-service.js"></script>
-  <script type="module" src="app.js"></script>
+  <script type="module" src="app.js?v=20260812-8"></script>
 </body>
 </html>

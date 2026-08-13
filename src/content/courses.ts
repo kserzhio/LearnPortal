@@ -1,4 +1,4 @@
-import { getLessons, toCourseSummary, type CourseDefinition, type CourseSummary } from "@/content/course-contract";
+import { getLessons, toCourseSummary, type CourseDefinition, type CourseSummary, type LessonDefinition } from "@/content/course-contract";
 import { highLoadArchitectureCourse } from "@/content/courses/high-load-architecture";
 
 export type { CourseDefinition, CourseSummary, LessonDefinition } from "@/content/course-contract";
@@ -42,6 +42,19 @@ export function getCourseDefinition(courseId: string) {
 export function getCourseLessons(courseId: string) {
   const course = getCourseDefinition(courseId);
   return course ? getLessons(course) : [];
+}
+
+export function getPublicCourseLessons(courseId: string) {
+  return getCourseLessons(courseId).filter((lesson) => Boolean(lesson.seo));
+}
+
+export function getPublicLessonPath(courseSlug: string, lesson: LessonDefinition) {
+  return lesson.seo ? `/courses/${courseSlug}/lessons/${lesson.seo.slug}` : null;
+}
+
+export function getCoursePublicStartPath(course: CourseSummary) {
+  const lesson = getPublicCourseLessons(course.id)[0];
+  return lesson ? getPublicLessonPath(course.slug, lesson) : null;
 }
 
 export function getLessonById(courseId: string, lessonId: string) {

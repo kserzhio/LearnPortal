@@ -45,6 +45,10 @@ export const highLoadArchitectureCourse = defineCourse({
           },
           outcome: "Ти можеш перевести бізнес-вимоги у технічні показники.",
           legacyAnchor: "#lesson-1",
+          seo: {
+            slug: "what-is-high-load",
+            keywords: ["високонавантажені системи", "high load", "high availability", "RPS", "latency", "system design"],
+          },
         },
         {
           id: "high-load-02", moduleId: "high-load-foundations", position: 2,

@@ -1,0 +1,188 @@
+.levelPage {
+  --kids-bg: #111426;
+  --kids-panel: #1b2038;
+  --kids-panel-strong: #242a47;
+  --kids-line: #68708f;
+  --kids-text: #f8f9ff;
+  --kids-muted: #c9cee2;
+  --kids-lime: #c8f35e;
+  --kids-violet: #a9a0ff;
+  --kids-danger: #ffb6c5;
+  min-height: 100svh;
+  padding: clamp(1rem, 3vw, 2.5rem);
+  color: var(--kids-text);
+  background: var(--kids-bg);
+}
+
+.levelHeader,
+.workspace,
+.result,
+.hints {
+  width: min(100%, 90rem);
+  margin-inline: auto;
+}
+
+.progressSave { display: flex; width: min(100%, 90rem); min-height: 4.5rem; margin: 1rem auto 0; padding: 1rem; align-items: center; justify-content: space-between; gap: 1rem; border: .0625rem solid var(--kids-line); background: var(--kids-panel); }
+.progressSave p { margin: 0; color: var(--kids-muted); font-size: 1rem; line-height: 1.5; }
+.progressSave > div { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem; }
+.nextLevelLink,
+.mapLink { display: inline-flex; min-height: 2.75rem; padding: .65rem 1rem; align-items: center; justify-content: space-between; gap: 1rem; font-size: 1rem; font-weight: 900; text-decoration: none; }
+.nextLevelLink { color: #111426; background: var(--kids-lime); }
+.mapLink { color: var(--kids-text); border: .0625rem solid var(--kids-line); }
+.retrySaveButton { min-height: 2.75rem; padding: .65rem 1rem; color: var(--kids-text); border: .0625rem solid var(--kids-line); background: transparent; font-size: 1rem; font-weight: 900; cursor: pointer; }
+
+.levelHeader { padding-block: 1rem clamp(1.5rem, 4vw, 3rem); }
+.breadcrumbs { display: flex; gap: .65rem; align-items: center; flex-wrap: wrap; color: var(--kids-muted); font-size: 1rem; }
+.breadcrumbs a { display: inline-flex; min-height: 2.75rem; align-items: center; color: var(--kids-lime); font-weight: 800; }
+.breadcrumbs strong { color: var(--kids-text); }
+.levelIntro { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(18rem, .7fr); gap: clamp(1.5rem, 5vw, 5rem); align-items: end; margin-top: clamp(2rem, 5vw, 4rem); }
+.levelIntro > div:first-child > span,
+.objective > span,
+.panelHeading span,
+.result > div > span { color: var(--kids-violet); font: 800 1rem var(--font-mono), monospace; letter-spacing: .08em; }
+.levelIntro h1 { max-width: 55rem; margin: .8rem 0; font-size: clamp(2.5rem, 7vw, 6rem); line-height: .95; letter-spacing: -.045em; }
+.levelIntro p,
+.objective p { margin: 0; color: var(--kids-muted); font-size: 1rem; line-height: 1.65; }
+.objective { padding: 1.25rem; border: .0625rem solid var(--kids-line); background: var(--kids-panel); }
+.objective strong { display: block; margin: .8rem 0 .45rem; font-size: 1.15rem; }
+
+.progress { margin-top: 2rem; }
+.progress > div { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: .55rem; font-size: 1rem; }
+.progress span { color: var(--kids-muted); }
+.progress progress { width: 100%; height: .75rem; border: 0; accent-color: var(--kids-lime); background: var(--kids-panel-strong); }
+.progress progress::-webkit-progress-bar { background: var(--kids-panel-strong); }
+.progress progress::-webkit-progress-value { background: var(--kids-lime); }
+.progress progress::-moz-progress-bar { background: var(--kids-lime); }
+
+.workspace { display: grid; grid-template-columns: minmax(20rem, .9fr) minmax(28rem, 1.1fr); gap: 1rem; align-items: start; }
+.boardPanel,
+.palette,
+.editor,
+.hints { border: .0625rem solid var(--kids-line); background: var(--kids-panel); }
+.boardPanel,
+.editor,
+.hints { padding: clamp(1rem, 3vw, 1.5rem); }
+.creationArea { display: grid; gap: 1rem; min-width: 0; }
+.panelHeading { display: flex; justify-content: space-between; gap: 1rem; align-items: start; }
+.panelHeading h2 { margin: .45rem 0 0; font-size: clamp(1.3rem, 3vw, 1.8rem); }
+.panelHeading p { max-width: 24rem; margin: 0; color: var(--kids-muted); font-size: 1rem; line-height: 1.5; text-align: right; }
+
+.gameBoard { display: grid; grid-template-columns: repeat(var(--board-columns), minmax(0, 1fr)); gap: .35rem; width: min(100%, 32rem); margin: clamp(1.5rem, 5vw, 3rem) auto; aspect-ratio: 1; }
+.cell { position: relative; display: grid; min-width: 0; place-items: center; border: .0625rem solid var(--kids-line); background: #292f4f; }
+.cell.goal { outline: .125rem dashed var(--kids-lime); outline-offset: -.35rem; }
+.character { position: relative; z-index: 3; display: grid; width: 70%; aspect-ratio: 1; place-items: center; color: #111426; border-radius: 35%; background: var(--kids-lime); font-size: clamp(1rem, 4vw, 2rem); font-weight: 900; box-shadow: 0 .5rem 1.5rem #080a1480; }
+.obstacle { color: var(--kids-danger); font-size: clamp(1rem, 4vw, 2rem); }
+.item { color: #ffe27a; font-size: clamp(1rem, 4vw, 2rem); }
+.flag { position: absolute; right: .3rem; top: .2rem; color: var(--kids-lime); font-size: 1rem; }
+.boardLegend { display: flex; gap: 1rem; margin: 0; padding: 0; justify-content: center; flex-wrap: wrap; color: var(--kids-muted); font-size: 1rem; list-style: none; }
+.boardLegend li { display: flex; gap: .4rem; align-items: center; }
+.boardLegend span { color: var(--kids-lime); }
+
+.palette { padding: 1rem; }
+.commandList { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr)); gap: .65rem; margin-top: 1rem; }
+.commandList button { min-height: 5rem; padding: .8rem; color: var(--kids-text); border: .0625rem solid var(--kids-line); background: var(--kids-panel-strong); text-align: left; cursor: pointer; }
+.commandList button:hover { border-color: var(--kids-lime); }
+.commandList strong,
+.commandList span { display: block; }
+.commandList strong { color: var(--kids-lime); font-size: 1rem; }
+.commandList span { margin-top: .35rem; color: var(--kids-muted); font-size: 1rem; line-height: 1.4; }
+
+.textButton,
+.hints button,
+.runControls button,
+.blockList > li > button { min-height: 2.75rem; padding: .6rem .85rem; color: var(--kids-text); border: .0625rem solid var(--kids-line); background: transparent; font-size: 1rem; font-weight: 800; cursor: pointer; }
+.textButton:disabled,
+.hints button:disabled,
+.runControls button:disabled { opacity: .58; cursor: not-allowed; }
+.emptyEditor { min-height: 8rem; margin: 1rem 0; padding: 1rem; color: var(--kids-muted); border: .125rem dashed var(--kids-line); font-size: 1rem; line-height: 1.6; }
+.blockList { display: grid; gap: .65rem; margin: 1rem 0; padding: 0; list-style: none; }
+.blockList li { display: grid; grid-template-columns: auto 1fr auto; gap: .75rem; align-items: start; padding: .75rem; color: #141627; background: var(--kids-lime); }
+.stepNumber { display: grid; width: 2.25rem; min-height: 2.25rem; place-items: center; color: var(--kids-text); background: #38306e; font: 800 1rem var(--font-mono), monospace; }
+.blockList strong { display: block; font-size: 1rem; }
+.blockList label { display: flex; gap: .6rem; align-items: center; margin-top: .5rem; font-size: 1rem; font-weight: 700; }
+.blockList input { width: 5rem; min-height: 2.75rem; padding: .35rem; border: .125rem solid #38306e; background: #fff; font-size: 1rem; }
+.blockList small { display: block; margin-top: .5rem; font-size: 1rem; }
+.blockList > li > button { min-width: 2.75rem; padding: 0; color: #fff; border: 0; background: #5a2142; }
+.codeEquivalent { border-top: .0625rem solid var(--kids-line); }
+.codeEquivalent summary { min-height: 2.75rem; padding-block: .8rem; color: var(--kids-violet); font-size: 1rem; font-weight: 800; cursor: pointer; }
+.codeEquivalent pre { margin: 0; padding: 1rem; overflow: auto; color: var(--kids-lime); background: #0c0f1e; font: 1rem/1.7 var(--font-mono), monospace; }
+
+.codeLabel { display: block; margin: 1rem 0 .5rem; font-size: 1rem; font-weight: 800; }
+.editor textarea { width: 100%; min-height: 18rem; padding: 1rem; resize: vertical; color: var(--kids-lime); border: .0625rem solid var(--kids-line); background: #0c0f1e; font: 1rem/1.7 var(--font-mono), monospace; tab-size: 2; }
+.editorHelp { margin: .75rem 0 0; color: var(--kids-muted); font-size: 1rem; line-height: 1.5; }
+.runControls { display: flex; gap: .65rem; padding: 1rem; flex-wrap: wrap; border: .0625rem solid var(--kids-line); background: var(--kids-panel); }
+.runControls .runButton { display: inline-flex; gap: 1.5rem; color: #111426; border-color: var(--kids-lime); background: var(--kids-lime); }
+.executionStatus { min-height: 1.5rem; margin: 0; color: var(--kids-muted); font-size: 1rem; }
+
+.result { display: grid; grid-template-columns: minmax(0, .9fr) minmax(20rem, 1.1fr); gap: 2rem; margin-top: 1rem; padding: clamp(1rem, 4vw, 2rem); border: .0625rem solid var(--kids-line); }
+.resultSuccess { background: #173a35; }
+.resultRetry { background: #3b1e32; }
+.result h2 { margin: .6rem 0; font-size: clamp(1.7rem, 4vw, 2.8rem); }
+.result p { color: var(--kids-muted); font-size: 1rem; line-height: 1.6; }
+.result .codeLocation { color: #ffe27a; font-weight: 800; }
+.result > div > strong { display: block; font-size: 1rem; line-height: 1.5; }
+.stars { display: grid; gap: .5rem; margin: 0; padding: 0; list-style: none; }
+.stars li { display: grid; grid-template-columns: auto 1fr; gap: .75rem; align-items: center; padding: .7rem; color: var(--kids-muted); border: .0625rem solid var(--kids-line); }
+.stars li > span { color: #9599ab; font-size: 1.6rem; }
+.stars .starEarned { color: var(--kids-text); background: #21362e; }
+.stars .starEarned > span { color: #ffe27a; }
+.stars strong,
+.stars small { display: block; font-size: 1rem; }
+.stars small { margin-top: .25rem; line-height: 1.4; }
+
+.hints { margin-top: 1rem; }
+.hints > p { color: var(--kids-muted); font-size: 1rem; line-height: 1.6; }
+.hints ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; margin: 1rem 0; padding: 0; list-style: none; }
+.hints li { padding: 1rem; border: .0625rem solid var(--kids-line); background: var(--kids-panel-strong); }
+.hints li strong { color: var(--kids-lime); font-size: 1rem; }
+.hints li p { margin: .5rem 0 0; color: var(--kids-muted); font-size: 1rem; line-height: 1.55; }
+.hints button { color: #111426; border-color: var(--kids-lime); background: var(--kids-lime); }
+
+.levelPage a:focus-visible,
+.levelPage button:focus-visible,
+.levelPage input:focus-visible,
+.levelPage textarea:focus-visible,
+.levelPage summary:focus-visible,
+.levelPage pre:focus-visible { outline: .1875rem solid var(--kids-lime); outline-offset: .1875rem; }
+
+@media (max-width: 68em) {
+  .workspace { grid-template-columns: 1fr; }
+  .boardPanel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(18rem, .8fr); gap: 1.5rem; align-items: center; }
+  .boardPanel .panelHeading,
+  .boardLegend { grid-column: 1 / -1; }
+  .gameBoard { grid-column: 1; grid-row: 2; }
+}
+
+@media (max-width: 48em) {
+  .levelIntro,
+  .result { grid-template-columns: 1fr; }
+  .boardPanel { display: block; }
+  .hints ol { grid-template-columns: 1fr; }
+  .progressSave { align-items: stretch; flex-direction: column; }
+}
+
+@media (max-width: 30em) {
+  .levelPage { padding-inline: .75rem; }
+  .panelHeading { align-items: stretch; flex-direction: column; }
+  .panelHeading p { text-align: left; }
+  .runControls { display: grid; grid-template-columns: 1fr; }
+  .runControls button,
+  .hints button { width: 100%; }
+  .blockList li { grid-template-columns: auto 1fr; }
+  .blockList > li > button { grid-column: 1 / -1; }
+  .progress > div { align-items: flex-start; flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .levelPage *,
+  .levelPage *::before,
+  .levelPage *::after { scroll-behavior: auto; transition-duration: .01ms; animation-duration: .01ms; animation-iteration-count: 1; }
+}
+
+@media (forced-colors: active) {
+  .cell.goal,
+  .commandList button,
+  .runControls button,
+  .hints button { border: .125rem solid ButtonText; }
+  .character { border: .125rem solid CanvasText; }
+}

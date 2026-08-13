@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { ProfileForm } from "@/app/profile/profile-form";
 import { DeleteAccountForm } from "@/app/profile/delete-account-form";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import Link from "next/link";
+import { SystemIcon } from "@/components/ui/system-icon";
 
 export const metadata: Metadata = { title: "Профіль" };
 
@@ -64,6 +66,13 @@ export default async function ProfilePage() {
           <p>Критичні зміни потребують повторної авторизації та перевіряються на сервері.</p>
         </aside>
       </div>
+
+      <section className="profile-panel profile-projects-panel" aria-labelledby="profileProjectsHeading">
+        <span>APPLIED LEARNING</span>
+        <h2 id="profileProjectsHeading">Завершені проєкти</h2>
+        <p>Переглядай приватні фінальні роботи, редагуй їх або експортуй versioned JSON.</p>
+        <Link className="primary-link" href="/dashboard/projects">Відкрити бібліотеку <SystemIcon name="arrow-right" /></Link>
+      </section>
 
       <section className="delete-account-panel" aria-labelledby="deleteAccountHeading">
         <span>DANGER ZONE</span>

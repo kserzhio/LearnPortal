@@ -27,6 +27,10 @@ export type LessonDefinition = Readonly<{
   practice: LessonPractice;
   outcome: string;
   legacyAnchor: `#lesson-${number}`;
+  seo?: Readonly<{
+    slug: string;
+    keywords: readonly string[];
+  }>;
 }>;
 
 export type CourseModuleDefinition = Readonly<{

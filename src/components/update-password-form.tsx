@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import { SystemIcon } from "@/components/ui/system-icon";
 
 export function UpdatePasswordForm() {
   const [message, setMessage] = useState("");
@@ -41,7 +42,7 @@ export function UpdatePasswordForm() {
       <small>Щонайменше 12 символів. Після зміни не передавай пароль нікому.</small>
       <button type="submit" disabled={pending || complete}>{pending ? "Оновлення…" : "Оновити пароль"}</button>
       <p id="passwordUpdateMessage" className="auth-message" role="status" aria-live="polite">{message}</p>
-      {complete ? <Link className="auth-inline-link" href="/dashboard">Перейти до dashboard →</Link> : null}
+      {complete ? <Link className="auth-inline-link" href="/dashboard">Перейти до dashboard <SystemIcon name="arrow-right" /></Link> : null}
     </form>
   );
 }

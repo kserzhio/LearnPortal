@@ -34,6 +34,7 @@ type LessonShellProps = Readonly<{
   accessNotice?: ReactNode;
   resultAction?: ReactNode;
   practiceAddon?: ReactNode;
+  learningSupport?: ReactNode;
 }>;
 
 const shellSections = [
@@ -59,6 +60,7 @@ export function LessonShell({
   accessNotice,
   resultAction,
   practiceAddon,
+  learningSupport,
 }: LessonShellProps) {
   const lessonNumber = String(lesson.position).padStart(2, "0");
 
@@ -145,6 +147,7 @@ export function LessonShell({
         <div><span>05 · РЕЗУЛЬТАТ ЗАНЯТТЯ</span><h2>{lesson.outcome}</h2></div>
         {resultAction}
       </section>
+      {learningSupport}
     </article>
   );
 }
